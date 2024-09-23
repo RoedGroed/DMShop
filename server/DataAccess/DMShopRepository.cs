@@ -1,6 +1,8 @@
-﻿namespace DataAccess;
+﻿using DataAccess.Interfaces;
 
-public class DMShopRepository
+namespace DataAccess;
+
+public class DMShopRepository : IDMShopRepository
 {
     
 }

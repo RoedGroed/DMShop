@@ -1,5 +1,12 @@
 ﻿namespace Service;
-public class DMShopService
+
+public interface IDMShopService
+{
+    
+}
+
+
+public class DMShopService : IDMShopService
 {
     
 }

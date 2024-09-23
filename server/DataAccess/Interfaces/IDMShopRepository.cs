@@ -1,6 +1,6 @@
 ﻿namespace DataAccess.Interfaces;
 
-public class IDMShopRepository
+public interface IDMShopRepository
 {
     
 }
