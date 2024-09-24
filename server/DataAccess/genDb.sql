@@ -68,3 +68,49 @@ CREATE INDEX "IX_orders_customer_id" ON orders (customer_id);
 CREATE UNIQUE INDEX unique_product_name ON paper (name);
 
 CREATE INDEX "IX_paper_properties_property_id" ON paper_properties (property_id);
+
+
+-- Insert some customers
+INSERT INTO customers (name, address, phone, email) VALUES
+                                                        ('John Doe', '123 Elm St', '123-456-7890', 'johndoe@example.com'),
+                                                        ('Jane Smith', '456 Oak St', '234-567-8901', 'janesmith@example.com'),
+                                                        ('Bob Johnson', '789 Maple St', '345-678-9012', 'bobjohnson@example.com');
+
+-- Insert some paper products
+INSERT INTO paper (name, discontinued, stock, price) VALUES
+                                                         ('A4 Paper', FALSE, 500, 10.50),
+                                                         ('A3 Paper', FALSE, 300, 15.75),
+                                                         ('Glossy Photo Paper', FALSE, 200, 25.00),
+                                                         ('Recycled Paper', TRUE, 50, 8.25);
+
+-- Insert some properties
+INSERT INTO properties (property_name) VALUES
+                                           ('Color: White'),
+                                           ('Weight: 80gsm'),
+                                           ('Finish: Glossy'),
+                                           ('Environment: Recycled');
+
+-- Insert relationships between paper and properties
+INSERT INTO paper_properties (paper_id, property_id) VALUES
+                                                         (1, 1),  -- A4 Paper is White
+                                                         (1, 2),  -- A4 Paper is 80gsm
+                                                         (2, 1),  -- A3 Paper is White
+                                                         (2, 2),  -- A3 Paper is 80gsm
+                                                         (3, 1),  -- Glossy Photo Paper is White
+                                                         (3, 2),  -- Glossy Photo Paper is 80gsm
+                                                         (3, 3),  -- Glossy Photo Paper is Glossy Finish
+                                                         (4, 1),  -- Recycled Paper is White
+                                                         (4, 4);  -- Recycled Paper is Recycled
+
+-- Insert some orders
+INSERT INTO orders (order_date, delivery_date, status, total_amount, customer_id) VALUES
+                                                                                      ('2023-09-01 12:30:00+00', '2023-09-05', 'shipped', 100.50, 1),
+                                                                                      ('2023-09-10 14:00:00+00', '2023-09-15', 'delivered', 50.25, 2),
+                                                                                      ('2023-09-20 16:45:00+00', NULL, 'pending', 200.75, 3);
+
+-- Insert some order entries
+INSERT INTO order_entries (quantity, product_id, order_id) VALUES
+                                                               (10, 1, 1),  -- 10 units of A4 Paper for order 1
+                                                               (5, 2, 1),   -- 5 units of A3 Paper for order 1
+                                                               (2, 3, 2),   -- 2 units of Glossy Photo Paper for order 2
+                                                               (20, 4, 3);  -- 20 units of Recycled Paper for order 3
