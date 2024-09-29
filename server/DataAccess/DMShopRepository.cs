@@ -46,19 +46,19 @@ public class DMShopRepository (DMShopContext context) : IDMShopRepository
     public Paper UpdatePaper(Paper paper, List<int> propertyIds)
     {
         var existingPaper = context.Papers
-            .Include(p => p.Properties) 
+            .Include(p => p.Properties)
             .FirstOrDefault(p => p.Id == paper.Id);
 
         if (existingPaper == null)
         {
             throw new ArgumentException($"Paper with id {paper.Id} not found.");
         }
-        
+
         existingPaper.Name = paper.Name;
         existingPaper.Price = paper.Price;
         existingPaper.Stock = paper.Stock;
         existingPaper.Discontinued = paper.Discontinued;
-        
+
         // Update paper properties
         var updatedProperties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();
 
@@ -78,7 +78,7 @@ public class DMShopRepository (DMShopContext context) : IDMShopRepository
     public void AddPropertiesToPaper(int paperId, List<int> propertyIds)
     {
         var paper = context.Papers.Include(p => p.Properties).FirstOrDefault(p => p.Id == paperId);
-       
+
         var properties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();
         foreach (var property in properties)
         {
