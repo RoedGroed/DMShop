@@ -2,7 +2,11 @@ module.exports = {
     purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     darkMode: false, // or 'media' or 'class'
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                customBlue: '#354E7A', // Tilføj din tilpassede farve her
+            },
+        },
     },
     variants: {
         extend: {},
@@ -12,40 +16,6 @@ module.exports = {
         require('daisyui'),
     ],
     daisyui: {
-        themes: [
-
-            "light",
-            "dark",
-             "cupcake",
-            "bumblebee",
-            "emerald",
-            "corporate",
-            "synthwave",
-            "retro",
-            "cyberpunk",
-            "valentine",
-            "halloween",
-            "garden",
-            "forest",
-            "aqua",
-            "lofi",
-            "pastel",
-            "fantasy",
-            "wireframe",
-            "black",
-            "luxury",
-            "dracula",
-            "cmyk",
-            "autumn",
-            "business",
-            "acid",
-            "lemonade",
-            "night",
-            "coffee",
-            "winter",
-            "dim",
-            "nord",
-            "sunset",
-        ],
+        
     },
 }
