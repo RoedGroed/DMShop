@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "server\DataAc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "server\Service\Service.csproj", "{504AA188-B2D8-4793-A405-55983E802D4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTests", "server\dataaccesstests\DataAccessTests.csproj", "{0F9A35CA-620E-4A53-B600-0CF90CE2B607}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTests", "server\DataAccessTests\DataAccessTests.csproj", "{0F9A35CA-620E-4A53-B600-0CF90CE2B607}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedTestDependencies", "server\SharedTestDependencies\SharedTestDependencies.csproj", "{86AD4E29-2096-49DC-BFC6-97BAC8575689}"
 EndProject
