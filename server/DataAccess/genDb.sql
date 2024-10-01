@@ -74,7 +74,9 @@ CREATE INDEX "IX_paper_properties_property_id" ON paper_properties (property_id)
 INSERT INTO customers (name, address, phone, email) VALUES
                                                         ('John Doe', '123 Elm St', '123-456-7890', 'johndoe@example.com'),
                                                         ('Jane Smith', '456 Oak St', '234-567-8901', 'janesmith@example.com'),
-                                                        ('Bob Johnson', '789 Maple St', '345-678-9012', 'bobjohnson@example.com');
+                                                        ('Bob Johnson', '789 Maple St', '345-678-9012', 'bobjohnson@example.com'),
+                                                        ('Alice Brown', '321 Pine St', '456-789-0123', 'alicebrown@example.com'),
+                                                        ('Charlie Black', '654 Cedar St', '567-890-1234', 'charlieblack@example.com');
 
 -- Insert some paper products
 INSERT INTO paper (name, discontinued, stock, price) VALUES
@@ -102,15 +104,33 @@ INSERT INTO paper_properties (paper_id, property_id) VALUES
                                                          (4, 1),  -- Recycled Paper is White
                                                          (4, 4);  -- Recycled Paper is Recycled
 
--- Insert some orders
+-- Insert 12 orders with different statuses (matching enum values)
 INSERT INTO orders (order_date, delivery_date, status, total_amount, customer_id) VALUES
-                                                                                      ('2023-09-01 12:30:00+00', '2023-09-05', 'shipped', 100.50, 1),
-                                                                                      ('2023-09-10 14:00:00+00', '2023-09-15', 'delivered', 50.25, 2),
-                                                                                      ('2023-09-20 16:45:00+00', NULL, 'pending', 200.75, 3);
+                                                                                      ('2023-09-01 12:30:00+00', '2023-09-05', 'shipped', 100.50, 1),       -- Order 1 - shipped
+                                                                                      ('2023-09-10 14:00:00+00', '2023-09-15', 'delivered', 50.25, 2),      -- Order 2 - delivered
+                                                                                      ('2023-09-20 16:45:00+00', NULL, 'pending', 200.75, 3),               -- Order 3 - pending
+                                                                                      ('2023-08-15 11:00:00+00', '2023-08-20', 'cancelled', 120.00, 1),     -- Order 4 - cancelled
+                                                                                      ('2023-07-01 09:15:00+00', '2023-07-05', 'processing', 300.40, 2),    -- Order 5 - processing
+                                                                                      ('2023-06-25 16:00:00+00', '2023-06-28', 'delivered', 75.99, 3),      -- Order 6 - delivered
+                                                                                      ('2023-05-20 14:30:00+00', NULL, 'pending', 500.20, 4),               -- Order 7 - pending
+                                                                                      ('2023-04-12 13:00:00+00', '2023-04-17', 'shipped', 220.45, 5),       -- Order 8 - shipped
+                                                                                      ('2023-03-28 10:45:00+00', '2023-04-02', 'processing', 180.30, 4),    -- Order 9 - processing
+                                                                                      ('2023-02-10 15:50:00+00', '2023-02-15', 'cancelled', 99.99, 5),      -- Order 10 - cancelled
+                                                                                      ('2023-01-05 10:15:00+00', '2023-01-10', 'delivered', 149.99, 2),     -- Order 11 - delivered
+                                                                                      ('2022-12-25 12:00:00+00', NULL, 'pending', 89.50, 1);                -- Order 12 - pending
 
 -- Insert some order entries
 INSERT INTO order_entries (quantity, product_id, order_id) VALUES
                                                                (10, 1, 1),  -- 10 units of A4 Paper for order 1
                                                                (5, 2, 1),   -- 5 units of A3 Paper for order 1
                                                                (2, 3, 2),   -- 2 units of Glossy Photo Paper for order 2
-                                                               (20, 4, 3);  -- 20 units of Recycled Paper for order 3
+                                                               (20, 4, 3),  -- 20 units of Recycled Paper for order 3
+                                                               (8, 1, 4),   -- 8 units of A4 Paper for order 4
+                                                               (6, 2, 5),   -- 6 units of A3 Paper for order 5
+                                                               (12, 3, 6),  -- 12 units of Glossy Photo Paper for order 6
+                                                               (15, 1, 7),  -- 15 units of A4 Paper for order 7
+                                                               (3, 4, 8),   -- 3 units of Recycled Paper for order 8
+                                                               (5, 1, 9),   -- 5 units of A4 Paper for order 9
+                                                               (9, 2, 10),  -- 9 units of A3 Paper for order 10
+                                                               (7, 3, 11),  -- 7 units of Glossy Photo Paper for order 11
+                                                               (20, 4, 12); -- 20 units of Recycled Paper for order 12

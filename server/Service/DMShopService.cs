@@ -107,4 +107,6 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         var orders = DMShopRepository.GetAllOrders(limit, startAt);
         return orders.Select(order => OrderDto.FromEntity(order)).ToList();
     }
+    
+    
 }
