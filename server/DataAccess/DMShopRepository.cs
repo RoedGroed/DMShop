@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public class DMShopRepository (DMShopContext context) : IDMShopRepository
+public class DMShopRepository(DMShopContext context) : IDMShopRepository
 {
-    // Implement the methods from the interface here.
-
     public List<Paper> GetAllPapers()
     {
         return context.Papers.ToList();
@@ -88,4 +86,25 @@ public class DMShopRepository (DMShopContext context) : IDMShopRepository
         context.SaveChanges();
     }
 
+    public List<Order> GetOrdersForList(int limit, int startAt)
+    {
+        return context.Orders
+            .Include(o => o.Customer)
+            .OrderBy(o => o.Id)
+            .Skip(startAt)
+            .Take(limit)
+            .ToList();
+    }
+
+    public Order GetOrderDetailsById(int orderId)
+    {
+        var order = context.Orders
+            .Include(o => o.OrderEntries)
+                .ThenInclude(oe => oe.Product)
+            .Include(o => o.Customer)
+            .FirstOrDefault(o => o.Id == orderId);
+
+        return order;
+    }
+    
 }

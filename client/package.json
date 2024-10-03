@@ -12,6 +12,7 @@
     "deploy": "npx firebase deploy --only hosting"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "daisyui": "^4.12.10",
     "jotai": "^2.10.0",
     "jotai-devtools": "^0.10.1",

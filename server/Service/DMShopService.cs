@@ -16,11 +16,11 @@ public interface IDMShopService
 
     public ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds);
  
+    public List<OrderListDto> GetOrdersForList(int limit, int startAt);
 }
 
 
-public class DMShopService(
-    IDMShopRepository DMShopRepository) : IDMShopService
+public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
 {
     public List<ProductDto> GetAllPapers()
     {
@@ -101,4 +101,11 @@ public class DMShopService(
         return ProductDto.FromEntity(updatedPaper);
     }
 
+    public List<OrderListDto> GetOrdersForList(int limit, int startAt)
+    {
+        var orders = DMShopRepository.GetOrdersForList(limit, startAt);
+        return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+    }
+    
+    
 }
