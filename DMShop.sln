@@ -10,7 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{24AD2FDB-7015-4B33-A03E-01A1D2DC1A76}"
 	ProjectSection(SolutionItems) = preProject
 		server\DataAccessTests\DataAccessTests.csproj = server\DataAccessTests\DataAccessTests.csproj
-		server\DataAccessTests\GetAllProductsTest.cs = server\DataAccessTests\GetAllProductsTest.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "server\DataAccess\DataAccess.csproj", "{1589F889-E4D3-4720-A523-7279F3ED6563}"
@@ -20,6 +19,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTests", "server\DataAccessTests\DataAccessTests.csproj", "{0F9A35CA-620E-4A53-B600-0CF90CE2B607}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedTestDependencies", "server\SharedTestDependencies\SharedTestDependencies.csproj", "{86AD4E29-2096-49DC-BFC6-97BAC8575689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "server\ServiceTests\ServiceTests.csproj", "{436A51D2-BB24-4A07-A59B-37E79C6BD685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiIntegrationTests", "server\ApiIntegrationTests\ApiIntegrationTests.csproj", "{4013A944-3446-4B8E-AABC-8DF2BC2F485E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +53,14 @@ Global
 		{86AD4E29-2096-49DC-BFC6-97BAC8575689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86AD4E29-2096-49DC-BFC6-97BAC8575689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86AD4E29-2096-49DC-BFC6-97BAC8575689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436A51D2-BB24-4A07-A59B-37E79C6BD685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436A51D2-BB24-4A07-A59B-37E79C6BD685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436A51D2-BB24-4A07-A59B-37E79C6BD685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436A51D2-BB24-4A07-A59B-37E79C6BD685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4013A944-3446-4B8E-AABC-8DF2BC2F485E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4013A944-3446-4B8E-AABC-8DF2BC2F485E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4013A944-3446-4B8E-AABC-8DF2BC2F485E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4013A944-3446-4B8E-AABC-8DF2BC2F485E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1589F889-E4D3-4720-A523-7279F3ED6563} = {24AD2FDB-7015-4B33-A03E-01A1D2DC1A76}

@@ -15,5 +15,7 @@ public interface IDMShopRepository
     public Paper UpdatePaper(Paper paper, List<int> propertyIds);
     void AddPropertiesToPaper(int paperId, List<int> propertyIds);
     
-    public List<Order> GetAllOrders(int limit, int startAt);
+    public List<Order> GetOrdersForList(int limit, int startAt);
+
+    public Order GetOrderDetailsById(int orderId);
 }

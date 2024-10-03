@@ -17,7 +17,7 @@ namespace Service.TransferModels.Responses
                 Id = orderEntry.Id,
                 Quantity = orderEntry.Quantity, 
                 ProductId = orderEntry.ProductId,
-                ProductName = orderEntry.Product?.Name ?? string.Empty,
+                ProductName = orderEntry.Product?.Name ?? "Unknown",
                 Price = orderEntry.Product?.Price
             };
         }

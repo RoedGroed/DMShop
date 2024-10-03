@@ -1,13 +1,19 @@
-﻿import React, { useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
-import { OrdersAtom } from "../atoms/OrdersAtom";
-import { useInitializeData } from "../initializers/useInitializeOrders";
+import { OrdersAtom } from "../../atoms/OrdersAtom";
 import { CogIcon } from '@heroicons/react/24/solid';
+import { http } from "../../http";
 
 const OrdersList = () => {
-    const [orders] = useAtom(OrdersAtom);
+    const [orders, setOrders] = useAtom(OrdersAtom);
+    const [page, setPage] = useState(0);
+    const [pageSize] = useState(10);
 
-    useInitializeData();
+    useEffect(() => {
+        http.api.orderGetAllOrders({limit: pageSize, startAt: page * pageSize}).then((res) => {
+            setOrders(res.data);
+        });
+    }, [page, pageSize]);
 
     return (
         <div className="min-h-screen bg-customBlue flex flex-col items-center justify-start pt-16">
@@ -55,6 +61,23 @@ const OrdersList = () => {
                     </li>
                 ))}
             </ul>
+
+            {/* Pagination controls */}
+            <div className="flex justify-between mt-4 w-3/4">
+                <button
+                    disabled={page === 0}
+                    onClick={() => setPage(page - 1)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded disabled:bg-gray-700"
+                >
+                    Previous
+                </button>
+                <button
+                    onClick={() => setPage(page + 1)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                >
+                    Next
+                </button>
+            </div>
         </div>
     );
 };

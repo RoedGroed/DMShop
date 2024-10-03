@@ -13,9 +13,9 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
 
     [HttpGet]
     [Route("")]
-    public ActionResult<List<OrderDto>> GetAllOrders(int limit = 10, int startAt = 0)
+    public ActionResult<List<OrderListDto>> GetOrdersForList(int limit = 10, int startAt = 0)
     {
-        var orders = service.GetAllOrders(limit, startAt);  
+        var orders = service.GetOrdersForList(limit, startAt);  
         return Ok(orders);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using Service.TransferModels.Responses;
-using Microsoft.Extensions.Logging;
 
 namespace Service;
 
@@ -17,7 +16,7 @@ public interface IDMShopService
 
     public ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds);
  
-    public List<OrderDto> GetAllOrders(int limit, int startAt);
+    public List<OrderListDto> GetOrdersForList(int limit, int startAt);
 }
 
 
@@ -102,10 +101,10 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         return ProductDto.FromEntity(updatedPaper);
     }
 
-    public List<OrderDto> GetAllOrders(int limit, int startAt)
+    public List<OrderListDto> GetOrdersForList(int limit, int startAt)
     {
-        var orders = DMShopRepository.GetAllOrders(limit, startAt);
-        return orders.Select(order => OrderDto.FromEntity(order)).ToList();
+        var orders = DMShopRepository.GetOrdersForList(limit, startAt);
+        return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
     }
     
     

@@ -5,7 +5,7 @@ import Webshop from "./Webshop";
 import Contact from "./Contact";
 import About from "./About";
 import Home from "./Home";
-import OrdersList from "./OrdersList";
+import OrdersList from "./Order/OrdersList";
 
 const App = () => {
 

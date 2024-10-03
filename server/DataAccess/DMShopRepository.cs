@@ -86,15 +86,25 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         context.SaveChanges();
     }
 
-    public List<Order> GetAllOrders(int limit, int startAt)
+    public List<Order> GetOrdersForList(int limit, int startAt)
     {
         return context.Orders
-            .Include(o => o.OrderEntries)
             .Include(o => o.Customer)
             .OrderBy(o => o.Id)
             .Skip(startAt)
             .Take(limit)
             .ToList();
+    }
+
+    public Order GetOrderDetailsById(int orderId)
+    {
+        var order = context.Orders
+            .Include(o => o.OrderEntries)
+                .ThenInclude(oe => oe.Product)
+            .Include(o => o.Customer)
+            .FirstOrDefault(o => o.Id == orderId);
+
+        return order;
     }
     
 }
