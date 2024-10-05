@@ -1,6 +1,8 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
+using FluentValidation;
 using Service.TransferModels.Responses;
+using Service.Validators;
 
 namespace Service;
 
@@ -12,10 +14,14 @@ public interface IDMShopService
 
     public ProductDto CreatePaper(ProductDto productDto);
 
-    public ProductDto DeletePaper(int id);
+    ProductDto DeletePaper(int id, ProductDto productDto);
 
-    public ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds);
- 
+    ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds);
+
+    ProductDto GetPaperById(int id);
+
+    List<PropertyDto> GetAllProperties();
+
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
 }
 
@@ -57,6 +63,11 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
 
     public ProductDto CreatePaper(ProductDto productDto)
     {
+        // Validate the incoming product data
+        var validator = new CreatePaperValidator();
+        validator.ValidateAndThrow(productDto);
+
+        // Map the incoming DTO to the Paper entity
         var paper = new Paper
         {
             Name = productDto.Name,
@@ -65,26 +76,31 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
             Discontinued = productDto.Discontinued = false
         };
 
-        var createdPaper = DMShopRepository.CreatePaper(paper);
+        // Extract property IDs from the productDto, if any
+        var propertyIds = productDto.Properties?.Select(p => p.Id).ToList() ?? new List<int>();
 
-        if (productDto.Properties != null && productDto.Properties.Any())
-        {
-            var propertyIds = productDto.Properties.Select(p => p.Id).ToList();
-            DMShopRepository.AddPropertiesToPaper(createdPaper.Id, propertyIds);
-        }
+        // Call repository to create the paper and associate properties at the same time
+        var createdPaper = DMShopRepository.CreatePaper(paper, propertyIds);
 
         return ProductDto.FromEntity(createdPaper);
     }
 
-    public ProductDto DeletePaper(int id)
+    public ProductDto DeletePaper(int id, ProductDto productDto)
     {
-        var deletedPaper = DMShopRepository.DeletePaper(id);
+        // Extract property IDs from the productDto
+        var propertyIds = productDto.Properties?.Select(p => p.Id).ToList() ?? new List<int>();
+
+        // Call the repository to delete the paper along with specified properties
+        var deletedPaper = DMShopRepository.DeletePaper(id, propertyIds);
         return ProductDto.FromEntity(deletedPaper);
 
     }
 
     public ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds)
     {
+
+        var validator = new CreatePaperValidator();
+        validator.ValidateAndThrow(productDto);
 
         var paper = new Paper
         {
@@ -99,6 +115,23 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         var updatedPaper = DMShopRepository.UpdatePaper(paper, propertyIds);
 
         return ProductDto.FromEntity(updatedPaper);
+    }
+
+    public ProductDto GetPaperById(int id)
+    {
+        var paper = DMShopRepository.GetPaperById(id);
+        return paper != null ? ProductDto.FromEntity(paper) : null;
+    }
+
+    public List<PropertyDto> GetAllProperties()
+    {
+        var properties = DMShopRepository.GetAllProperties();
+        return properties.Select(p => new PropertyDto()
+        {
+            Id = p.Id,
+            PropertyName = p.PropertyName
+
+        }).ToList();
     }
 
     public List<OrderListDto> GetOrdersForList(int limit, int startAt)

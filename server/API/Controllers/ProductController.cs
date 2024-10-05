@@ -48,11 +48,11 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
 
     [HttpDelete]
     [Route("{id}")]
-    public ActionResult<ProductDto> DeletePaper(int id)
+    public ActionResult<ProductDto> DeletePaper(int id, [FromBody] ProductDto productDto)
     {
         try
         {
-            var deletedProduct = service.DeletePaper(id);
+            var deletedProduct = service.DeletePaper(id, productDto); // Pass the productDto
             return Ok(deletedProduct);
         }
         catch (ArgumentException e)
@@ -60,6 +60,7 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
             return NotFound(e.Message);
         }
     }
+
 
     [HttpPut]
     [Route("{id}")]
@@ -78,11 +79,23 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
 
         // Extract property IDs from the productDto
         var propertyIds = productDto.Properties?.Select(p => p.Id).ToList() ?? new List<int>();
-
-        // Call the service layer
+        
         var updatedProduct = service.UpdatePaper(id, productDto, propertyIds);
 
         return Ok(updatedProduct);
+    }
+    
+    [HttpGet]
+    [Route("{id}")]
+    public ActionResult<ProductDto> GetPaperById(int id)
+    {
+        var paper = service.GetPaperById(id); // Fetch the paper using the service layer
+        if (paper == null)
+        {
+            return NotFound("Paper not found.");
+        }
+    
+        return Ok(paper);
     }
     
 }

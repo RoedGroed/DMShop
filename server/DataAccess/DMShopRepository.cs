@@ -19,25 +19,53 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             .ToList();
     }
 
-
-
-    public Paper CreatePaper(Paper paper)
+    public Paper GetPaperById(int id)
     {
+        return context.Papers.Include(p => p.Properties).FirstOrDefault(p => p.Id == id);
+    }
+
+
+    public Paper CreatePaper(Paper paper, List<int> propertyIds)
+    {
+        // Fetch the properties to be associated with the paper
+        var properties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();
+
+        // Add the properties to the paper object
+        paper.Properties = properties;
+
+        // Add the paper to the context
         context.Papers.Add(paper);
         context.SaveChanges();
+
         return paper;
     }
 
-    public Paper DeletePaper(int id)
+    public Paper DeletePaper(int id, List<int> propertyIds)
     {
-        var paper = context.Papers.Find(id);
+        // Retrieve the paper along with its associated properties
+        var paper = context.Papers
+            .Include(p => p.Properties)
+            .FirstOrDefault(p => p.Id == id);
+
         if (paper == null)
         {
             throw new ArgumentException($"Paper with id {id} not found.");
         }
 
+        // Remove associated properties based on provided propertyIds
+        var propertiesToRemove = paper.Properties
+            .Where(p => propertyIds.Contains(p.Id))
+            .ToList();
+
+        // Remove the selected properties from the paper
+        foreach (var property in propertiesToRemove)
+        {
+            paper.Properties.Remove(property);
+        }
+
         context.Papers.Remove(paper);
         context.SaveChanges();
+
         return paper;
     }
 
@@ -52,6 +80,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             throw new ArgumentException($"Paper with id {paper.Id} not found.");
         }
 
+        // Update the paper's basic properties
         existingPaper.Name = paper.Name;
         existingPaper.Price = paper.Price;
         existingPaper.Stock = paper.Stock;
@@ -60,12 +89,8 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         // Update paper properties
         var updatedProperties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();
 
-        // Clear the existing properties and add the new set of properties
-        existingPaper.Properties.Clear();
-        foreach (var property in updatedProperties)
-        {
-            existingPaper.Properties.Add(property);
-        }
+        // Reassign properties in a single step
+        existingPaper.Properties = updatedProperties;
 
         context.Papers.Update(existingPaper);
         context.SaveChanges();
@@ -84,6 +109,11 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         }
 
         context.SaveChanges();
+    }
+
+    public List<Property> GetAllProperties()
+    {
+        return context.Properties.ToList();
     }
 
     public List<Order> GetOrdersForList(int limit, int startAt)

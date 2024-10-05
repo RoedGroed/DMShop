@@ -4,15 +4,15 @@ namespace DataAccess.Interfaces;
 
 public interface IDMShopRepository
 {
-    public List<Paper> GetAllPapers();
+    // outline the methods for the repo
+    List<Paper> GetAllPapers();
+    List<Paper> GetAllPapersWithProperties();
+    Paper GetPaperById(int id);
+    Paper CreatePaper(Paper paper, List<int> propertyIds);
+    Paper DeletePaper(int id, List<int> propertyIds);
+    Paper UpdatePaper(Paper paper, List<int> propertyIds);
 
-    public List<Paper> GetAllPapersWithProperties();
-
-    public Paper CreatePaper(Paper paper);
-
-    public Paper DeletePaper(int id);
-
-    public Paper UpdatePaper(Paper paper, List<int> propertyIds);
+    List<Property> GetAllProperties();
     void AddPropertiesToPaper(int paperId, List<int> propertyIds);
     
     public List<Order> GetOrdersForList(int limit, int startAt);

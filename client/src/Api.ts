@@ -9,32 +9,35 @@
  * ---------------------------------------------------------------
  */
 
-export interface OrderDto {
+export interface OrderListDto {
   /** @format int32 */
   id?: number;
+  customerName?: string;
   /** @format date-time */
   orderDate?: string;
   /** @format date */
   deliveryDate?: string | null;
-  status?: string;
   /** @format double */
   totalAmount?: number;
-  /** @format int32 */
-  customerId?: number | null;
-  customerName?: string | null;
-  orderEntries?: OrderEntryDto[];
+  status?: string;
 }
 
-export interface OrderEntryDto {
+export interface ProductDto {
   /** @format int32 */
   id?: number;
+  name?: string;
+  discontinued?: boolean;
   /** @format int32 */
-  quantity?: number;
-  /** @format int32 */
-  productId?: number | null;
-  productName?: string | null;
+  stock?: number;
   /** @format double */
-  price?: number | null;
+  price?: number;
+  properties?: PropertyDto[];
+}
+
+export interface PropertyDto {
+  /** @format int32 */
+  id?: number;
+  propertyName?: string;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -182,10 +185,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Order
-     * @name OrderGetAllOrders
+     * @name OrderGetOrdersForList
      * @request GET:/api/Order
      */
-    orderGetAllOrders: (
+    orderGetOrdersForList: (
       query?: {
         /**
          * @format int32
@@ -200,10 +203,121 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<OrderDto[], any>({
+      this.request<OrderListDto[], any>({
         path: `/api/Order`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductGetAllPapers
+     * @request GET:/api/Product/basic
+     */
+    productGetAllPapers: (params: RequestParams = {}) =>
+      this.request<ProductDto[], any>({
+        path: `/api/Product/basic`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductGetAllPapersWithProperties
+     * @request GET:/api/Product/with-properties
+     */
+    productGetAllPapersWithProperties: (params: RequestParams = {}) =>
+      this.request<ProductDto[], any>({
+        path: `/api/Product/with-properties`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductCreatePaper
+     * @request POST:/api/Product
+     */
+    productCreatePaper: (data: ProductDto, params: RequestParams = {}) =>
+      this.request<ProductDto, any>({
+        path: `/api/Product`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductDeletePaper
+     * @request DELETE:/api/Product/{id}
+     */
+    productDeletePaper: (id: number, data: ProductDto, params: RequestParams = {}) =>
+      this.request<ProductDto, any>({
+        path: `/api/Product/${id}`,
+        method: "DELETE",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductUpdatePaper
+     * @request PUT:/api/Product/{id}
+     */
+    productUpdatePaper: (id: number, data: ProductDto, params: RequestParams = {}) =>
+      this.request<ProductDto, any>({
+        path: `/api/Product/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductGetPaperById
+     * @request GET:/api/Product/{id}
+     */
+    productGetPaperById: (id: number, params: RequestParams = {}) =>
+      this.request<ProductDto, any>({
+        path: `/api/Product/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name PropertyGetAllProperties
+     * @request GET:/api/Property
+     */
+    propertyGetAllProperties: (params: RequestParams = {}) =>
+      this.request<PropertyDto[], any>({
+        path: `/api/Property`,
+        method: "GET",
         format: "json",
         ...params,
       }),

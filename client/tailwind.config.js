@@ -4,7 +4,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                customBlue: '#354E7A', 
+                customBlue: '#354E7A',
+                popupGrey: '#1C1D1F',
             },
         },
     },

@@ -10,7 +10,7 @@ const OrdersList = () => {
     const [pageSize] = useState(10);
 
     useEffect(() => {
-        http.api.orderGetAllOrders({limit: pageSize, startAt: page * pageSize}).then((res) => {
+        http.api.orderGetOrdersForList({limit: pageSize, startAt: page * pageSize}).then((res) => {
             setOrders(res.data);
         });
     }, [page, pageSize]);
