@@ -9,5 +9,5 @@ public partial class Property
 
     public string PropertyName { get; set; } = null!;
 
-    public virtual ICollection<Paper> Papers { get; set; } = new List<Paper>();
+    public virtual ICollection<PaperApi> Papers { get; set; } = new List<PaperApi>();
 }

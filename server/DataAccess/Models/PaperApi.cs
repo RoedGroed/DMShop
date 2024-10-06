@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DataAccess.Models;
 
-public partial class Paper
+public partial class PaperApi
 {
     public int Id { get; set; }
 

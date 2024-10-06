@@ -15,5 +15,5 @@ public partial class OrderEntry
 
     public virtual Order? Order { get; set; }
 
-    public virtual Paper? Product { get; set; }
+    public virtual PaperApi? Product { get; set; }
 }

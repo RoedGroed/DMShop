@@ -13,16 +13,16 @@ namespace Service.TransferModels.Responses
         public double Price { get; set; }
         public List<PropertyDto> Properties { get; set; } = new List<PropertyDto>();  // Include properties
 
-        public static ProductDto FromEntity(Paper paper)
+        public static ProductDto FromEntity(PaperApi paperApi)
         {
             return new ProductDto
             {
-                Id = paper.Id,
-                Name = paper.Name,
-                Discontinued = paper.Discontinued,
-                Stock = paper.Stock,
-                Price = paper.Price,
-                Properties = paper.Properties.Select(prop => new PropertyDto
+                Id = paperApi.Id,
+                Name = paperApi.Name,
+                Discontinued = paperApi.Discontinued,
+                Stock = paperApi.Stock,
+                Price = paperApi.Price,
+                Properties = paperApi.Properties.Select(prop => new PropertyDto
                 {
                     Id = prop.Id,
                     PropertyName = prop.PropertyName
