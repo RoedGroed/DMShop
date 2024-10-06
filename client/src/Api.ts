@@ -321,5 +321,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: "json",
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name PropertyCreateProduct
+     * @request POST:/api/Property
+     */
+    propertyCreateProduct: (data: PropertyDto, params: RequestParams = {}) =>
+      this.request<PropertyDto, any>({
+        path: `/api/Property`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name PropertyDeleteProperty
+     * @request DELETE:/api/Property/{id}
+     */
+    propertyDeleteProperty: (id: number, params: RequestParams = {}) =>
+      this.request<PropertyDto, any>({
+        path: `/api/Property/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name PropertyUpdateProperty
+     * @request PUT:/api/Property/{id}
+     */
+    propertyUpdateProperty: (id: number, data: PropertyDto, params: RequestParams = {}) =>
+      this.request<PropertyDto, any>({
+        path: `/api/Property/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
   };
 }

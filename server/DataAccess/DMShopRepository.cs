@@ -40,6 +40,8 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         return paper;
     }
 
+
+
     public Paper DeletePaper(int id, List<int> propertyIds)
     {
         // Retrieve the paper along with its associated properties
@@ -115,7 +117,42 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     {
         return context.Properties.ToList();
     }
+    
+    
+    public Property CreateProperty(Property property)
+    {
+        context.Properties.Add(property);
+        context.SaveChanges();
 
+        return property;
+    }
+
+    public void DeleteProperty(int propertyId)
+    {
+        // Remove associations in the join table.
+        var property = context.Properties
+            .Include(p => p.Papers)  // Load related papers
+            .FirstOrDefault(p => p.Id == propertyId);
+        
+        // Remove the associations with the paper
+        property.Papers.Clear();
+        
+        // remove the property in its own table
+        context.Properties.Remove(property);
+        context.SaveChanges();
+    }
+
+    public Property UpdateProperty(Property updatedProperty)
+    {
+        var existingProperty = context.Properties.FirstOrDefault(p => p.Id == updatedProperty.Id);
+        
+        existingProperty.PropertyName = updatedProperty.PropertyName;
+
+        context.SaveChanges();
+        return existingProperty;
+    }
+    
+    
     public List<Order> GetOrdersForList(int limit, int startAt)
     {
         return context.Orders

@@ -11,6 +11,10 @@ public interface IDMShopRepository
     Paper CreatePaper(Paper paper, List<int> propertyIds);
     Paper DeletePaper(int id, List<int> propertyIds);
     Paper UpdatePaper(Paper paper, List<int> propertyIds);
+    
+    Property CreateProperty(Property property);
+    void DeleteProperty(int propertyId);
+    Property UpdateProperty(Property updatedProperty);
 
     List<Property> GetAllProperties();
     void AddPropertiesToPaper(int paperId, List<int> propertyIds);

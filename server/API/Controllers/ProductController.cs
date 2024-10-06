@@ -94,7 +94,6 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
         {
             return NotFound("Paper not found.");
         }
-    
         return Ok(paper);
     }
     

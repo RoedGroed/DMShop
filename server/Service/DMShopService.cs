@@ -22,6 +22,10 @@ public interface IDMShopService
 
     List<PropertyDto> GetAllProperties();
 
+    PropertyDto CreateProperty(PropertyDto propertyDto);
+    PropertyDto DeleteProperty(int propertyId);
+    PropertyDto UpdateProperty(PropertyDto propertyDto);
+
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
 }
 
@@ -85,6 +89,7 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         return ProductDto.FromEntity(createdPaper);
     }
 
+
     public ProductDto DeletePaper(int id, ProductDto productDto)
     {
         // Extract property IDs from the productDto
@@ -132,6 +137,35 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
             PropertyName = p.PropertyName
 
         }).ToList();
+    }
+    
+    public PropertyDto CreateProperty(PropertyDto propertyDto)
+    {
+        var property = new Property
+        {
+            PropertyName = propertyDto.PropertyName
+        };
+        var createdProperty = DMShopRepository.CreateProperty(property);
+        return new PropertyDto { Id = createdProperty.Id, PropertyName = createdProperty.PropertyName };
+    }
+    
+    public PropertyDto DeleteProperty(int propertyId)
+    {
+        DMShopRepository.DeleteProperty(propertyId);
+        return null; 
+    }
+
+    public PropertyDto UpdateProperty(PropertyDto propertyDto)
+    {
+
+        var property = new Property
+        {
+            Id = propertyDto.Id,
+            PropertyName = propertyDto.PropertyName
+        };
+
+        var updatedProperty = DMShopRepository.UpdateProperty(property);
+        return new PropertyDto { Id = updatedProperty.Id, PropertyName = updatedProperty.PropertyName };
     }
 
     public List<OrderListDto> GetOrdersForList(int limit, int startAt)
