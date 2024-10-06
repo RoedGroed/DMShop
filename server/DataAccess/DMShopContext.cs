@@ -18,7 +18,7 @@ public partial class DMShopContext : DbContext
 
     public virtual DbSet<OrderEntry> OrderEntries { get; set; }
 
-    public virtual DbSet<PaperApi> Papers { get; set; }
+    public virtual DbSet<Paper> Papers { get; set; }
 
     public virtual DbSet<Property> Properties { get; set; }
 
@@ -97,7 +97,7 @@ public partial class DMShopContext : DbContext
                 .HasConstraintName("order_entries_product_id_fkey");
         });
 
-        modelBuilder.Entity<PaperApi>(entity =>
+        modelBuilder.Entity<Paper>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("paper_pkey");
 
@@ -124,7 +124,7 @@ public partial class DMShopContext : DbContext
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("paper_properties_property_id_fkey"),
-                    l => l.HasOne<PaperApi>().WithMany()
+                    l => l.HasOne<Paper>().WithMany()
                         .HasForeignKey("PaperId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("paper_properties_paper_id_fkey"),

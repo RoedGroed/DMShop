@@ -6,12 +6,12 @@ namespace DataAccess;
 
 public class DMShopRepository(DMShopContext context) : IDMShopRepository
 {
-    public List<PaperApi> GetAllPapers()
+    public List<Paper> GetAllPapers()
     {
         return context.Papers.ToList();
     }
 
-    public List<PaperApi> GetAllPapersWithProperties()
+    public List<Paper> GetAllPapersWithProperties()
     {
         return context.Papers
             .Include(p => p.OrderEntries)
@@ -19,28 +19,28 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             .ToList();
     }
 
-    public PaperApi GetPaperById(int id)
+    public Paper GetPaperById(int id)
     {
         return context.Papers.Include(p => p.Properties).FirstOrDefault(p => p.Id == id);
     }
 
 
-    public PaperApi CreatePaper(PaperApi paperApi, List<int> propertyIds)
+    public Paper CreatePaper(Paper paper, List<int> propertyIds)
     {
         // Fetch the properties to be associated with the paper
         var properties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();
 
         // Add the properties to the paper object
-        paperApi.Properties = properties;
+        paper.Properties = properties;
 
         // Add the paper to the context
-        context.Papers.Add(paperApi);
+        context.Papers.Add(paper);
         context.SaveChanges();
 
-        return paperApi;
+        return paper;
     }
 
-    public PaperApi DeletePaper(int id, List<int> propertyIds)
+    public Paper DeletePaper(int id, List<int> propertyIds)
     {
         // Retrieve the paper along with its associated properties
         var paper = context.Papers
@@ -69,22 +69,22 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         return paper;
     }
 
-    public PaperApi UpdatePaper(PaperApi paperApi, List<int> propertyIds)
+    public Paper UpdatePaper(Paper paper, List<int> propertyIds)
     {
         var existingPaper = context.Papers
             .Include(p => p.Properties)
-            .FirstOrDefault(p => p.Id == paperApi.Id);
+            .FirstOrDefault(p => p.Id == paper.Id);
 
         if (existingPaper == null)
         {
-            throw new ArgumentException($"Paper with id {paperApi.Id} not found.");
+            throw new ArgumentException($"Paper with id {paper.Id} not found.");
         }
 
         // Update the paper's basic properties
-        existingPaper.Name = paperApi.Name;
-        existingPaper.Price = paperApi.Price;
-        existingPaper.Stock = paperApi.Stock;
-        existingPaper.Discontinued = paperApi.Discontinued;
+        existingPaper.Name = paper.Name;
+        existingPaper.Price = paper.Price;
+        existingPaper.Stock = paper.Stock;
+        existingPaper.Discontinued = paper.Discontinued;
 
         // Update paper properties
         var updatedProperties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();

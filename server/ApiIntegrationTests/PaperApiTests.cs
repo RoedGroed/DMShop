@@ -91,7 +91,7 @@ public class PaperApiTests : WebApplicationFactory<Program>
         Assert.Equal(newPaperDto.Price, result.Price);
         Assert.NotEmpty(newPaperDto.Properties);
     
-        /*//  check if the paper was actually created in the database
+        /*// Optionally, check if the paper was actually created in the database
         using (var scope = _pgCtxSetup.DbContextInstance)
         {
             var createdPaper = await scope.Papers.FindAsync(result.Id);

@@ -68,7 +68,7 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         validator.ValidateAndThrow(productDto);
 
         // Map the incoming DTO to the Paper entity
-        var paper = new PaperApi
+        var paper = new Paper
         {
             Name = productDto.Name,
             Price = productDto.Price,
@@ -102,7 +102,7 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         var validator = new CreatePaperValidator();
         validator.ValidateAndThrow(productDto);
 
-        var paper = new PaperApi
+        var paper = new Paper
         {
             Id = id, 
             Name = productDto.Name,
