@@ -107,7 +107,6 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         {
             paper.Properties.Add(property);
         }
-
         context.SaveChanges();
     }
 

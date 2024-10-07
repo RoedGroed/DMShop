@@ -18,4 +18,13 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
         var orders = service.GetOrdersForList(limit, startAt);  
         return Ok(orders);
     }
+
+    [HttpGet]
+    [Route("{orderId}")]
+    public ActionResult<OrderDetailsDto> GetOrderById(int orderId)
+    {
+        var orderDetail = service.GetOrderDetailsById(orderId);
+        return Ok(orderDetail);
+    }
+
 }
