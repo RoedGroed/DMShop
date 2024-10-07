@@ -23,6 +23,8 @@ public interface IDMShopService
     List<PropertyDto> GetAllProperties();
 
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
+    
+    public OrderDetailsDto GetOrderDetailsById(int id);
 }
 
 
@@ -138,6 +140,12 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
     {
         var orders = DMShopRepository.GetOrdersForList(limit, startAt);
         return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+    }
+
+    public OrderDetailsDto GetOrderDetailsById(int orderId)
+    {
+        var order = DMShopRepository.GetOrderDetailsById(orderId);
+        return OrderDetailsDto.FromEntity(order);
     }
     
     
