@@ -6,6 +6,7 @@ namespace DataAccess;
 
 public class DMShopRepository(DMShopContext context) : IDMShopRepository
 {
+    
     public List<Paper> GetAllPapers()
     {
         return context.Papers.ToList();
@@ -134,6 +135,14 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             .Include(o => o.Customer)
             .FirstOrDefault(o => o.Id == orderId);
 
+        return order;
+    }
+
+    public Order CreateOrder(Order order, List<OrderEntry> orderEntries)
+    {
+        context.Orders.Add(order);
+        context.OrderEntries.AddRange(orderEntries);
+        context.SaveChanges();
         return order;
     }
     

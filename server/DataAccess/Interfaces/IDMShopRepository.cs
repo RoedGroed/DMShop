@@ -5,6 +5,7 @@ namespace DataAccess.Interfaces;
 public interface IDMShopRepository
 {
     // outline the methods for the repo
+    Order CreateOrder(Order order, List<OrderEntry> orderEntries);
     List<Paper> GetAllPapers();
     List<Paper> GetAllPapersWithProperties();
     Paper GetPaperById(int id);
@@ -18,4 +19,6 @@ public interface IDMShopRepository
     public List<Order> GetOrdersForList(int limit, int startAt);
 
     public Order GetOrderDetailsById(int orderId);
+
+  
 }

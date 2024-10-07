@@ -1,6 +1,7 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
+using Service.TransferModels.Requests;
 using Service.TransferModels.Responses;
 using Service.Validators;
 
@@ -8,6 +9,8 @@ namespace Service;
 
 public interface IDMShopService
 {
+
+    OrderDto CreateOrder(CreateOrderDTO createOrderDto);
     public List<ProductDto> GetAllPapers();
     
     public List<ProductDto> GetAllPapersWithProperties();
@@ -139,6 +142,26 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         var orders = DMShopRepository.GetOrdersForList(limit, startAt);
         return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
     }
-    
-    
+
+    public OrderDto CreateOrder(CreateOrderDTO createOrderDto)
+    {
+        var order = new Order
+        {
+            OrderDate = createOrderDto.OrderDate,
+            DeliveryDate = createOrderDto.DeliveryDate.Date != null 
+                ? DateOnly.FromDateTime(createOrderDto.DeliveryDate) 
+                : (DateOnly?)null,
+            Status = createOrderDto.Status,
+            TotalAmount = createOrderDto.TotalAmount,
+            CustomerId = createOrderDto.CustomerId
+        };
+        var orderEntries = createOrderDto.OrderEntries.Select(entry => new OrderEntry
+        {
+            ProductId = entry.ProductId,
+            Quantity = entry.Quantity,
+            Order = order
+        }).ToList();
+        var createdOrder = DMShopRepository.CreateOrder(order, orderEntries);
+        return OrderDto.FromEntity(createdOrder);
+    }
 }
