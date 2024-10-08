@@ -61,6 +61,16 @@ namespace SharedTestDependencies
 
             return propertyFaker.Generate(count);
         }
+        
+        public static List<Property> GetProperties(int count)
+        {
+            return new Faker<Property>()
+                .RuleFor(p => p.PropertyName, f => f.Commerce.ProductAdjective())
+                .Generate(count);
+        }
+        
+        
+        
     }
 }
     

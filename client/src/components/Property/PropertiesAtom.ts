@@ -1,6 +1,3 @@
-
-
-
 import { atom } from "jotai";
 import { PropertyDto } from "../../Api";
 
