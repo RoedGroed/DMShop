@@ -4,7 +4,11 @@ using System.Text.Json;
 using API;
 using DataAccess;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SharedTestDependencies;
 using PgCtx;
 using Service.TransferModels.Responses;
@@ -18,6 +22,26 @@ public class PaperApiTests : WebApplicationFactory<Program>
     private readonly PgCtxSetup<DMShopContext> _pgCtxSetup = new();
     private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureServices(services => {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions));
+
+            if (descriptor != null) services.Remove(descriptor);
+
+            services.AddDbContext<DMShopContext>(opt => {
+                opt.UseNpgsql(_pgCtxSetup._postgres.GetConnectionString());
+                opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                opt.EnableSensitiveDataLogging(false);
+                opt.LogTo(_ => { });
+            });
+        });
+
+
+        return base.CreateHost(builder);
+    }
     public PaperApiTests()
     {
         Environment.SetEnvironmentVariable("DbConnectionString", _pgCtxSetup._postgres.GetConnectionString());
