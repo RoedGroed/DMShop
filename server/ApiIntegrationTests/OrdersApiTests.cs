@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using SharedTestDependencies;
 using PgCtx;
 using Service.TransferModels.Responses;
-using Xunit;
 
 namespace ApiIntegrationTests
 {
