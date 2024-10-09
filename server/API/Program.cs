@@ -29,9 +29,10 @@ public class Program
             Console.WriteLine(appOptions);
             options.EnableSensitiveDataLogging();
         });
-        //builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreatePatientValidator>());
+        builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateOrderStatusValidator>());
         builder.Services.AddScoped<IDMShopRepository, DMShopRepository>();
         builder.Services.AddScoped<IDMShopService, DMShopService>();
+        
         builder.Services.AddControllers();
         builder.Services.AddOpenApiDocument();
 

@@ -1,6 +1,7 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
+using Service.TransferModels.Requests;
 using Service.TransferModels.Responses;
 using Service.Validators;
 
@@ -25,10 +26,15 @@ public interface IDMShopService
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
     
     public OrderDetailsDto GetOrderDetailsById(int id);
+    
+    public Order UpdateOrderStatus (int orderId, string newStatus);
 }
 
 
-public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
+public class DMShopService(
+    IDMShopRepository DMShopRepository,
+    IValidator<UpdateOrderStatusDTO> updateOrderStatusValidator
+    ) :IDMShopService
 {
     public List<ProductDto> GetAllPapers()
     {
@@ -147,6 +153,14 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         var order = DMShopRepository.GetOrderDetailsById(orderId);
         return OrderDetailsDto.FromEntity(order);
     }
-    
-    
+
+    public Order UpdateOrderStatus(int orderId, string newStatus)
+    {
+        var updateStatusDto = new UpdateOrderStatusDTO { newStatus = newStatus };
+        updateOrderStatusValidator.ValidateAndThrow(updateStatusDto);
+        
+        var updatedOrder = DMShopRepository.UpdateOrderStatus(orderId, newStatus);
+        
+        return updatedOrder;
+    }
 }
