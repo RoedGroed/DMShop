@@ -109,7 +109,6 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         {
             paper.Properties.Add(property);
         }
-
         context.SaveChanges();
     }
 
@@ -173,5 +172,14 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
         return order;
     }
-    
+
+    public Order UpdateOrderStatus(int orderId, string newStatus)
+    {
+        var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
+        
+        order.Status = newStatus;
+        context.SaveChanges();
+        
+        return order;
+    }
 }

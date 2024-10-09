@@ -5,19 +5,17 @@ using Service;
 using SharedTestDependencies;
 using Xunit;
 
+namespace ServiceTests;
 
-
-namespace ServiceTests
-{
-    public class OrderServiceTests
+    public class GetOrdersServiceTests
     {
-        private readonly PgCtxSetup<DMShopContext> _pgCtxSetup = new();
-        private readonly DMShopService _orderService;
+        private readonly PgCtxSetup<DMShopContext> setup = new();
+        private readonly DMShopService orderService;
 
-        public OrderServiceTests()
+        public GetOrdersServiceTests()
         {
-            var repository = new DMShopRepository(_pgCtxSetup.DbContextInstance);
-            _orderService = new DMShopService(repository);
+            var repository = new DMShopRepository(setup.DbContextInstance);
+            orderService = new DMShopService(repository, null);
         }
 
         [Fact]
@@ -30,11 +28,11 @@ namespace ServiceTests
                 TestObjects.GetOrder()
             };
 
-            _pgCtxSetup.DbContextInstance.Orders.AddRange(orders);
-            _pgCtxSetup.DbContextInstance.SaveChanges();
+            setup.DbContextInstance.Orders.AddRange(orders);
+            setup.DbContextInstance.SaveChanges();
 
             // Act
-            var result = _orderService.GetOrdersForList(2, 0);
+            var result = orderService.GetOrdersForList(2, 0);
 
             // Assert
             Assert.Equal(2, result.Count);
@@ -42,4 +40,3 @@ namespace ServiceTests
             Assert.Equal(orders[1].Customer.Name, result[1].CustomerName);
         }
     }
-}

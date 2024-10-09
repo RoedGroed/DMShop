@@ -9,7 +9,9 @@ namespace Service.TransferModels.Responses
         public DateOnly? DeliveryDate { get; set; }
         public string Status { get; set; }
         public double TotalAmount { get; set; }
+        
         public string CustomerName { get; set; }
+        public string CustomerAddress { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerPhone { get; set; }
 
@@ -24,9 +26,12 @@ namespace Service.TransferModels.Responses
                 DeliveryDate = order.DeliveryDate,
                 Status = order.Status,
                 TotalAmount = order.TotalAmount,
-                CustomerName = order.Customer?.Name ?? "Unknown",
-                CustomerEmail = order.Customer?.Email ?? "Unknown",
-                CustomerPhone = order.Customer?.Phone ?? "Unknown",
+                
+                CustomerName = order.Customer?.Name,
+                CustomerAddress = order.Customer?.Address,
+                CustomerEmail = order.Customer?.Email,
+                CustomerPhone = order.Customer?.Phone,
+                
                 OrderEntries = order.OrderEntries.Select(OrderEntryDto.FromEntity).ToList()
             };
         }

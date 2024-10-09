@@ -20,6 +20,6 @@ public interface IDMShopRepository
     void AddPropertiesToPaper(int paperId, List<int> propertyIds);
     
     public List<Order> GetOrdersForList(int limit, int startAt);
-
     public Order GetOrderDetailsById(int orderId);
+    public Order UpdateOrderStatus(int orderId, string newStatus);
 }

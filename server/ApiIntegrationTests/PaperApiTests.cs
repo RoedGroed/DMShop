@@ -3,13 +3,10 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using API;
 using DataAccess;
-using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using SharedTestDependencies;
 using PgCtx;
 using Service.TransferModels.Responses;
-using Xunit;
-
 
 namespace ApiIntegrationTests;
 

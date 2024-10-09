@@ -1,4 +1,4 @@
 ﻿import { atom } from "jotai";
-import { OrderDto } from "../Api";
+import { OrderListDto } from "../Api";
 
-export const OrdersAtom = atom<OrderDto[]>([]);
+export const OrdersAtom = atom<OrderListDto[]>([]);

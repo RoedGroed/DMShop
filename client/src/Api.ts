@@ -22,6 +22,41 @@ export interface OrderListDto {
   status?: string;
 }
 
+export interface OrderDetailsDto {
+  /** @format int32 */
+  id?: number;
+  /** @format date-time */
+  orderDate?: string;
+  /** @format date */
+  deliveryDate?: string | null;
+  status?: string;
+  /** @format double */
+  totalAmount?: number;
+  customerName?: string;
+  customerAddress?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  orderEntries?: OrderEntryDto[];
+}
+
+export interface OrderEntryDto {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  quantity?: number;
+  /** @format int32 */
+  productId?: number | null;
+  productName?: string | null;
+  /** @format double */
+  price?: number | null;
+  /** @format double */
+  totalPrice?: number;
+}
+
+export interface UpdateOrderStatusDTO {
+  newStatus?: string;
+}
+
 export interface ProductDto {
   /** @format int32 */
   id?: number;
@@ -208,6 +243,37 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Order
+     * @name OrderGetOrderById
+     * @request GET:/api/Order/{orderId}
+     */
+    orderGetOrderById: (orderId: number, params: RequestParams = {}) =>
+      this.request<OrderDetailsDto, any>({
+        path: `/api/Order/${orderId}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Order
+     * @name OrderUpdateOrderStatus
+     * @request PUT:/api/Order/{orderId}/status
+     */
+    orderUpdateOrderStatus: (orderId: number, data: UpdateOrderStatusDTO, params: RequestParams = {}) =>
+      this.request<File, any>({
+        path: `/api/Order/${orderId}/status`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 
