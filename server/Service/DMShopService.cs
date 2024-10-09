@@ -141,6 +141,9 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
     
     public PropertyDto CreateProperty(PropertyDto propertyDto)
     {
+        var validator = new PropertyValidator();
+        validator.ValidateAndThrow(propertyDto);
+        
         var property = new Property
         {
             PropertyName = propertyDto.PropertyName
@@ -157,6 +160,9 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
 
     public PropertyDto UpdateProperty(PropertyDto propertyDto)
     {
+        
+        var validator = new PropertyValidator();
+        validator.ValidateAndThrow(propertyDto);
 
         var property = new Property
         {

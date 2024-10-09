@@ -7,6 +7,6 @@ public class PropertyValidator : AbstractValidator<PropertyDto>
 {
     public PropertyValidator()
     {
-        // implement. Need frontend message of why it failed, also in paper. 
+        RuleFor(p => p.PropertyName.Length).GreaterThanOrEqualTo(2);
     }
 }
