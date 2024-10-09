@@ -7,13 +7,13 @@ using Service.Validators;
 
 namespace ServiceTests;
 
-public class DMShopServiceTests
+public class UpdateOrderStatusTests
 {
     private readonly Mock<IDMShopRepository> mockRepository;
     private readonly DMShopService service;
     private readonly UpdateOrderStatusValidator validator;
 
-    public DMShopServiceTests()
+    public UpdateOrderStatusTests()
     {
         mockRepository = new Mock<IDMShopRepository>();
         validator = new UpdateOrderStatusValidator();
