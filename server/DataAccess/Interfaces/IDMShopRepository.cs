@@ -6,6 +6,7 @@ public interface IDMShopRepository
 {
     // outline the methods for the repo
     Order CreateOrder(Order order, List<OrderEntry> orderEntries);
+    List<Paper> GetPaperByIds(List<int> productIds);
     List<Paper> GetAllPapers();
     List<Paper> GetAllPapersWithProperties();
     Paper GetPaperById(int id);

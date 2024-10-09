@@ -145,5 +145,10 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         context.SaveChanges();
         return order;
     }
+
+    public List<Paper> GetPaperByIds(List<int> paperIds)
+    {
+        return context.Papers.Where(paper => paperIds.Contains(paper.Id)).ToList();
+    }
     
 }

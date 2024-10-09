@@ -145,6 +145,20 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
 
     public OrderDto CreateOrder(CreateOrderDTO createOrderDto)
     {
+        double totalAmount = 0;
+        
+        var paperIds = createOrderDto.OrderEntries.Select(o => o.ProductId).ToList();
+        var papers = DMShopRepository.GetPaperByIds(paperIds);
+
+        foreach (var entry in createOrderDto.OrderEntries)
+        {
+            var paper = papers.FirstOrDefault(p => p.Id == entry.ProductId);
+            if (paper != null)
+            {
+                totalAmount += paper.Price * entry.Quantity;
+            }
+        }
+        
         var order = new Order
         {
             OrderDate = createOrderDto.OrderDate,
@@ -152,7 +166,7 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
                 ? DateOnly.FromDateTime(createOrderDto.DeliveryDate) 
                 : (DateOnly?)null,
             Status = createOrderDto.Status,
-            TotalAmount = createOrderDto.TotalAmount,
+            TotalAmount = totalAmount,
             CustomerId = createOrderDto.CustomerId
         };
         var orderEntries = createOrderDto.OrderEntries.Select(entry => new OrderEntry

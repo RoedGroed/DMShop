@@ -1,7 +1,7 @@
 import {Route, Routes} from "react-router-dom";
 import React, {useEffect} from "react";
 import NavigationBar from "./NavigationBar.tsx";
-import Webshop from "./Webshop";
+import Webshop from "./Webshop.tsx";
 import Contact from "./Contact";
 import About from "./About";
 import Home from "./Home";
