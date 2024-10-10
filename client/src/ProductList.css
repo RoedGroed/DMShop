@@ -41,6 +41,7 @@
 
 .product-name {
     margin-top: 10px;
+    margin-right: 5px;
     font-weight: bold;
     color: white;
     background-color: rgba(53, 78, 122, 1);
@@ -48,4 +49,50 @@
     width: 100%;
     text-align: center;
     border-radius: 4px;
+}
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add-button {
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    padding-top: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.add-button:hover {
+    transition: all 0.3s ease;
+    color: rgba(53, 78, 122, 1);
+}
+.product-price {
+    color: white;
+    margin-left: 10px;
+    padding-top: 5px;
+    font-weight: bold;
+}
+.tooltip {
+    position: absolute;
+    background-color: rgba(27, 26, 26, 0.95);
+    color: white;
+    border: 1px solid rgba(27, 26, 26, 0.75);
+    border-radius: 5px;
+    padding: 5px;
+    z-index: 10;
+    transform: translate(-50%, -10px);
+    white-space: nowrap;
+}
+.info-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 25px;
+    color: white;
+}
+.product-name-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
 }

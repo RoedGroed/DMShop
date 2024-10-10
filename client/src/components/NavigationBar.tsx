@@ -1,9 +1,9 @@
 import {useNavigate} from 'react-router-dom';
 import '../Styles.css';
-import {useState} from "react";
-import { http } from "../http";
-import axios from "axios";
-import {ProductDto} from "../Api.ts";
+import React, {useState} from "react";
+import {useCart} from "./webshop/CartContext.tsx";
+import ShoppingCart from "./webshop/ShoppingCart.tsx";
+
 
 
 export default function NavigationBar() {
@@ -19,10 +19,13 @@ export default function NavigationBar() {
     function toggleMenu() {
         setMenuOpen(!menuOpen);
     }
-
     function toggleCart() {
+        console.log("lukker kurv");
         setCartOpen(!cartOpen);
     }
+
+
+
 
     return (
         <div className='navigationbar'>
@@ -40,26 +43,18 @@ export default function NavigationBar() {
                 <button className='nav-buttons' onClick={() => handleNavigate("/webshop")}>Webstore</button>
                 <button className='nav-buttons' onClick={() => handleNavigate("/contact")}>Contact</button>
                 <button className='nav-buttons' onClick={() => handleNavigate("/about")}>About Us</button>
-                {/* Shopping cart*/}
-                <img
-                    className='shoppingcart-image'
-                    onClick={toggleCart}/>
+                <button className='shoppingcart-image' onClick={toggleCart}></button>
             </div>
 
             {/* The Burger Context */}
             {menuOpen && (
-            <div className='context-menu'>
+                <div className='context-menu'>
                 <button className='context-button' onClick={() => handleNavigate('/products')}>Products</button>
                 <button className='context-button' onClick={() => handleNavigate('/order')}>Orders</button>
             </div>
             )}
-            {/*Shopping cart menu*/}
-            {cartOpen && (
-                <div className='cart-menu'>
-                    <h2>Shopping Cart</h2>
-                    <button>Checkout</button>
-                </div>
-            )}
+            {/* Shopping Cart Component */}
+            <ShoppingCart cartOpen={cartOpen} toggleCart={toggleCart} />
 
         </div>
     )
