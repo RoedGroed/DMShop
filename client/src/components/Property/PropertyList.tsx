@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropertyItem from "./PropertyItem";
 import { useAtom } from "jotai";
-import { PropertiesAtom } from "./PropertiesAtom";
+import { PropertiesAtom } from "../../atoms/PropertiesAtom.ts";
 import { http } from "../../http.ts";
 
 const PropertyList: React.FC<{ onEdit: (id: number) => void; onDelete: (id: number) => void }> = ({ onEdit, onDelete }) => {

@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import { ProductDto } from "../../Api.ts";
 import UpdatePaperModal from "./UpdatePaperModal.tsx";
 import { useAtom } from "jotai";
-import { PapersAtom } from "./PapersAtom";
-import { PropertiesAtom } from "../Property/PropertiesAtom"; // Import the properties atom
+import { PapersAtom } from "../../atoms/PapersAtom.ts";
+import { PropertiesAtom } from "../../atoms/PropertiesAtom.ts";
 import { http } from "../../http.ts";
 import PaperItem from "./PaperItem";
 import Pagination from "./PaginationProp.tsx";
+import toast from "react-hot-toast";
 
 const ITEMS_PER_PAGE = 10;
 
 const PaperList = () => {
     const [papers, setPapers] = useAtom(PapersAtom);
-    const [properties] = useAtom(PropertiesAtom); // Get properties atom
+    const [properties] = useAtom(PropertiesAtom);
     const [selectedPaper, setSelectedPaper] = useState<ProductDto | null>(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -49,15 +50,20 @@ const PaperList = () => {
     };
 
     const updatePaper = async (updatedPaper: ProductDto) => {
-        await http.api.productUpdatePaper(updatedPaper.id!, updatedPaper);
+        try {
+            await http.api.productUpdatePaper(updatedPaper.id!, updatedPaper);
 
-        // Update the local atom state
-        setPapers((prev) =>
-            prev.map((paper) =>
-                paper.id === updatedPaper.id ? updatedPaper : paper
-            )
-        );
-        closeModal();
+            setPapers((prev) =>
+                prev.map((paper) =>
+                    paper.id === updatedPaper.id ? updatedPaper : paper
+                )
+            );
+            toast.success("Paper updated successfully!");
+
+            closeModal();
+        } catch (error) {
+            toast.error("Failed to update the paper. Please try again.");
+        }
     };
 
     // Calculate paginated papers
@@ -65,7 +71,7 @@ const PaperList = () => {
     const paginatedPapers = papers.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
     return (
-        <div className="min-h-screen bg-customBlue flex flex-col items-center justify-center">
+        <div className=" bg-customBlue flex flex-col items-center justify-center">
             <ul className="space-y-3 w-full max-w-5xl">
                 {paginatedPapers.map((paper) => (
                     <PaperItem

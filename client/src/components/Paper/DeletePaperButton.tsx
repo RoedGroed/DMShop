@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-hot-toast";
 import { http } from "../../http";
 import { useAtom } from "jotai";
-import { PapersAtom } from "./PapersAtom";
+import { PapersAtom } from "../../atoms/PapersAtom.ts";
 import { ProductDto } from "../../Api.ts";
 
 interface DeletePaperButtonProps {
@@ -21,7 +21,7 @@ const DeletePaperButton: React.FC<DeletePaperButtonProps> = ({ product }) => {
                     <div className="mt-4 flex justify-end space-x-2">
                         <button
                             onClick={() => {
-                                toast.dismiss(t.id); // Dismiss toaster
+                                toast.dismiss(t.id);
                                 deletePaper(); // Proceed with deletion
                             }}
                             className="btn btn-error"

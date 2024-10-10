@@ -1,5 +1,4 @@
-﻿using DataAccess.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Service;
 using Service.TransferModels.Responses;
@@ -89,7 +88,7 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
     [Route("{id}")]
     public ActionResult<ProductDto> GetPaperById(int id)
     {
-        var paper = service.GetPaperById(id); // Fetch the paper using the service layer
+        var paper = service.GetPaperById(id);
         if (paper == null)
         {
             return NotFound("Paper not found.");

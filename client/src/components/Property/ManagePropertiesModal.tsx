@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
-import { PropertiesAtom } from "./PropertiesAtom";
+import { toast } from "react-hot-toast";
+import { PropertiesAtom } from "../../atoms/PropertiesAtom.ts";
 import { PropertyDto } from "../../Api";
 import PropertyForm from "./PropertyForm";
 import PropertyList from "./PropertyList";
@@ -26,22 +27,56 @@ const ManagePropertiesModal: React.FC<ManagePropertiesModalProps> = ({ isOpen, o
     }, [isOpen, setProperties]);
 
     const handleSave = async (property: PropertyDto) => {
-        if (property.id) {
-            const response = await http.api.propertyUpdateProperty(property.id, property);
-            setProperties((prev) =>
-                prev.map((prop) => (prop.id === property.id ? response.data : prop))
-            );
-        } else {
-            const response = await http.api.propertyCreateProduct(property);
-            setProperties((prev) => [...prev, response.data]);
+        try {
+            if (property.id) {
+                const response = await http.api.propertyUpdateProperty(property.id, property);
+                setProperties((prev) =>
+                    prev.map((prop) => (prop.id === property.id ? response.data : prop))
+                );
+                toast.success("Update Success!");
+            } else {
+                const response = await http.api.propertyCreateProduct(property);
+                setProperties((prev) => [...prev, response.data]);
+                toast.success("Property Created Successfully!");
+            }
+            setEditingProperty(null);
+            onClose();
+        } catch (error) {
+            toast.error("Failed to save property.");
         }
-        setEditingProperty(null);
-        onClose();
     };
 
     const handleDelete = async (id: number) => {
-        await http.api.propertyDeleteProperty(id);
-        setProperties((prev) => prev.filter((prop) => prop.id !== id));
+        toast((t) => (
+            <div>
+                <p>Are you sure you want to delete this property?</p>
+                <div className="mt-4 flex justify-end space-x-2">
+                    <button
+                        onClick={async () => {
+                            toast.dismiss(t.id); // Dismiss the confirmation toast
+                            try {
+                                await http.api.propertyDeleteProperty(id);
+                                setProperties((prev) => prev.filter((prop) => prop.id !== id));
+                                toast.success("Delete Success!");
+                            } catch (error) {
+                                toast.error("Failed to delete property.");
+                            }
+                        }}
+                        className="btn btn-error"
+                    >
+                        Yes, Delete
+                    </button>
+                    <button
+                        onClick={() => toast.dismiss(t.id)} // Cancel deletion
+                        className="btn btn-outline"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        ), {
+            duration: 5000,
+        });
     };
 
     return (

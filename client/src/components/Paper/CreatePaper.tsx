@@ -3,7 +3,8 @@ import { ProductDto } from "../../Api.ts";
 import UpdatePaperModal from "./UpdatePaperModal.tsx";
 import { http } from "../../http.ts";
 import { useAtom } from "jotai";
-import { PapersAtom } from "./PapersAtom";
+import { PapersAtom } from "../../atoms/PapersAtom.ts";
+import toast from "react-hot-toast";
 
 const CreatePaper: React.FC = () => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -32,9 +33,10 @@ const CreatePaper: React.FC = () => {
             // Call the API to create the new paper
             const response = await http.api.productCreatePaper(newPaper);
             // Update the atom with the newly created paper
+            toast.success("Paper Created")
             setPapers((prev) => [...prev, response.data]);
         } catch (error) {
-            console.error("Error creating paper:", error);
+            toast.error("Error creating paper: " + error);
         }
         closeModal();
     };
