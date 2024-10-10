@@ -200,16 +200,33 @@ public class DMShopService(
 
     public OrderDetailsDto GetOrderDetailsById(int orderId)
     {
-        var order = DMShopRepository.GetOrderDetailsById(orderId);
-        return OrderDetailsDto.FromEntity(order);
+        try
+        {
+            var order = DMShopRepository.GetOrderDetailsById(orderId);
+            return OrderDetailsDto.FromEntity(order);
+        }
+        catch (DataAccessException ex)
+        {
+            throw new ServiceException(ex.Message);
+        }
     }
 
     public List<OrderListDto> GetRandomCustomerOrderHistory()
     {
-        var customer = DMShopRepository.GetRandomCustomer();
+        try
+        {
+            var customer = DMShopRepository.GetRandomCustomer();
+            if (customer == null) throw new ServiceException("No customers found.");
 
-        var orders = DMShopRepository.GetOrdersForCustomer(customer.Id);
-        return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+            var orders = DMShopRepository.GetOrdersForCustomer(customer.Id);
+            if (orders == null || !orders.Any()) throw new ServiceException("No orders found for the customer.");
+            
+            return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+        }
+        catch (DataAccessException ex)
+        {
+            throw new ServiceException(ex.Message);
+        }
     }
 
 
@@ -228,9 +245,9 @@ public class DMShopService(
         {
             throw new ServiceException("Invalid status update request");
         }
-        catch (DataAccessException)
+        catch (DataAccessException ex)
         {
-            throw new ServiceException("Failed to update order status in service layer");
+            throw new ServiceException(ex.Message);
         }    
     }
 }

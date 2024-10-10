@@ -2,6 +2,7 @@
 import { http } from "../../http";
 import { OrderDetailsDto, OrderListDto } from "../../Api";
 import OrderModal from "./OrderModal";
+import toast from "react-hot-toast";
 
 const CustomerOrderHistory = () => {
     const [orders, setOrders] = useState<OrderListDto[]>([]);
@@ -9,16 +10,34 @@ const CustomerOrderHistory = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
-        http.api.orderGetRandomCustomerOrderHistory().then((res) => {
-            setOrders(res.data);
-        });
+        http.api.orderGetRandomCustomerOrderHistory()
+            .then((res) => {
+                setOrders(res.data);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.error || "Failed to retrieve random customer orders.");
+                } else {
+                    toast.error("An unexpected error occurred.");
+                }
+            });
     }, []);
 
-    const handleOnClickOrder = async (orderId: number) => {
-        const res = await http.api.orderGetOrderById(orderId);
-        setSelectedOrder(res.data);
-        setModalOpen(true);
-    };
+
+    const handleOnClickOrder = async (orderId) => {
+        try {
+            const res = await http.api.orderGetOrderById(orderId);
+            setSelectedOrder(res.data);
+            setModalOpen(true);
+        } catch (error) {
+            if (error.response) {
+                toast.error(error.response.data.error || "Failed to fetch order details.");
+            } else {
+                toast.error("An unexpected error occurred.");
+            }
+        }
+    }
+
 
     const handleCloseModal = () => {
         setModalOpen(false);
@@ -46,7 +65,7 @@ const CustomerOrderHistory = () => {
                             <p>Delivery: {order.deliveryDate}</p>
                         </div>
                         <p className="w-2/12">
-                            <span className="font-bold">Total:</span> {order.totalAmount.toFixed(2)} DKK
+                            <span className="font-bold">Total: $</span> {order.totalAmount.toFixed(2)}
                         </p>
                         {/* Status */}
                         <div className="w-2/12 flex items-center justify-end space-x-2">

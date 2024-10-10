@@ -13,7 +13,6 @@ const StatusChanger = ({ orderId, currentStatus, onStatusChange }: StatusChanger
     const [status, setStatus] = useState(currentStatus);
 
     const handleStatusChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        toast("Updating order list...");
         const newStatus = e.target.value;
         setStatus(newStatus);
 

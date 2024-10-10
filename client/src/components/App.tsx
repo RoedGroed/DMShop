@@ -8,12 +8,14 @@ import Home from "./Home";
 import OrdersList from "./Order/OrdersList";
 import ProductsPage from "./Paper/ProductsPage.tsx";
 import CustomerOrderHistory from "./Order/CustomerOrderHistory"
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
 
 
     return (<>
         <NavigationBar />
+        <Toaster />
         <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/webshop" element={<Webshop />} />
