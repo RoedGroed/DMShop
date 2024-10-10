@@ -8,7 +8,6 @@ public class UpdateOrderStatusValidator : AbstractValidator<UpdateOrderStatusDTO
 {
     public UpdateOrderStatusValidator()
     {
-        // Gyldige statusser
         var validStatuses = new[] { "pending", "processing", "delivered", "cancelled" };
 
         RuleFor(x => x.newStatus)

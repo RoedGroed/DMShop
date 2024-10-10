@@ -16,8 +16,15 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
     [Route("")]
     public ActionResult<List<OrderListDto>> GetOrdersForList(int limit = 10, int startAt = 0)
     {
-        var orders = service.GetOrdersForList(limit, startAt);  
-        return Ok(orders);
+        try
+        {
+            var orders = service.GetOrdersForList(limit, startAt);  
+            return Ok(orders);
+        }
+        catch (ServiceException)
+        {
+            return StatusCode(500, new { error = "An error occurred while retrieving orders" });
+        }    
     }
 
     [HttpGet]
@@ -44,8 +51,19 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
     [Route("{orderId}/status")]
     public IActionResult UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDTO request)
     {
-        var updatedOrder = service.UpdateOrderStatus(orderId, request.newStatus);
-        return Ok(OrderDetailsDto.FromEntity(updatedOrder));
+        try
+        {
+            var updatedOrder = service.UpdateOrderStatus(orderId, request.newStatus);
+            return Ok(OrderDetailsDto.FromEntity(updatedOrder));
+        }
+        catch (ServiceException ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+        catch (Exception ex) 
+        {
+            return StatusCode(500, new { message = "An unexpected error occurred" });
+        }    
     }
 
 }

@@ -154,12 +154,19 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     
     public List<Order> GetOrdersForList(int limit, int startAt)
     {
-        return context.Orders
-            .Include(o => o.Customer)
-            .OrderBy(o => o.Id)
-            .Skip(startAt)
-            .Take(limit)
-            .ToList();
+        try
+        {
+            return context.Orders
+                .Include(o => o.Customer)
+                .OrderBy(o => o.Id)
+                .Skip(startAt)
+                .Take(limit)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new DataAccessException("Failed to retrieve orders from the database");
+        }
     }
 
     public Order GetOrderDetailsById(int orderId)
@@ -175,12 +182,19 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
     public Order UpdateOrderStatus(int orderId, string newStatus)
     {
-        var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
-        
-        order.Status = newStatus;
-        context.SaveChanges();
-        
-        return order;
+        try
+        {
+            var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
+            
+            order.Status = newStatus;
+            context.SaveChanges();
+            
+            return order;
+        }
+        catch (Exception)
+        {
+            throw new DataAccessException("Failed to update the order status in the database");
+        }
     }
 
     public List<Order> GetOrdersForCustomer(int customerId)
