@@ -27,6 +27,18 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
         var orderDetail = service.GetOrderDetailsById(orderId);
         return Ok(orderDetail);
     }
+    
+    [HttpGet]
+    [Route("random-customer/orders")]
+    public ActionResult<List<OrderListDto>> GetRandomCustomerOrderHistory()
+    {
+        var orders = service.GetRandomCustomerOrderHistory();
+        if (!orders.Any())
+        {
+            return NotFound("No orders found for any customer");
+        }
+        return Ok(orders);
+    }
 
     [HttpPut]
     [Route("{orderId}/status")]
