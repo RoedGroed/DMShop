@@ -47,6 +47,6 @@ public class UpdateOrderStatusTests
         var invalidStatus = "unknown_status";
 
         // Act & Assert
-        Assert.Throws<ValidationException>(() => service.UpdateOrderStatus(orderId, invalidStatus));
+        Assert.Throws<ServiceException>(() => service.UpdateOrderStatus(orderId, invalidStatus));
     }
 }
