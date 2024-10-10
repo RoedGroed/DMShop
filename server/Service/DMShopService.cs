@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using DataAccess;
+using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
 using Service.TransferModels.Requests;
@@ -186,8 +187,15 @@ public class DMShopService(
 
     public List<OrderListDto> GetOrdersForList(int limit, int startAt)
     {
-        var orders = DMShopRepository.GetOrdersForList(limit, startAt);
-        return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+        try
+        {
+            var orders = DMShopRepository.GetOrdersForList(limit, startAt);
+            return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+        }
+        catch (DataAccessException)
+        {
+            throw new ServiceException("Failed to retrieve orders from the service layer");
+        }    
     }
 
     public OrderDetailsDto GetOrderDetailsById(int orderId)
@@ -207,11 +215,22 @@ public class DMShopService(
 
     public Order UpdateOrderStatus(int orderId, string newStatus)
     {
-        var updateStatusDto = new UpdateOrderStatusDTO { newStatus = newStatus };
-        updateOrderStatusValidator.ValidateAndThrow(updateStatusDto);
-        
-        var updatedOrder = DMShopRepository.UpdateOrderStatus(orderId, newStatus);
-        
-        return updatedOrder;
+        try
+        {
+            var updateStatusDto = new UpdateOrderStatusDTO { newStatus = newStatus };
+            updateOrderStatusValidator.ValidateAndThrow(updateStatusDto);
+            
+            var updatedOrder = DMShopRepository.UpdateOrderStatus(orderId, newStatus);
+            
+            return updatedOrder;
+        }
+        catch (ValidationException)
+        {
+            throw new ServiceException("Invalid status update request");
+        }
+        catch (DataAccessException)
+        {
+            throw new ServiceException("Failed to update order status in service layer");
+        }    
     }
 }

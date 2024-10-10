@@ -13,6 +13,7 @@ const StatusChanger = ({ orderId, currentStatus, onStatusChange }: StatusChanger
     const [status, setStatus] = useState(currentStatus);
 
     const handleStatusChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+        toast("Updating order list...");
         const newStatus = e.target.value;
         setStatus(newStatus);
 
@@ -21,10 +22,15 @@ const StatusChanger = ({ orderId, currentStatus, onStatusChange }: StatusChanger
             toast.success("Order status updated successfully!");
             onStatusChange();
         } catch (error) {
-            toast.error("Failed to update order status.");
+            if (error.response) {
+                toast.error(error.response.data.message || "Failed to update order status.");
+            } else {
+                toast.error("An error occurred while updating the status.");
+            }
             setStatus(currentStatus);
         }
     };
+
 
     return (
         <div className="relative">

@@ -1,7 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { OrdersAtom } from "../../atoms/OrdersAtom";
-import { CogIcon } from '@heroicons/react/24/solid';
 import { http } from "../../http";
 import { OrderDetailsDto } from "../../Api";
 import OrderModal from "./OrderModal";
@@ -14,13 +13,22 @@ const OrdersList = () => {
     const [pageSize] = useState(10);
     const [selectedOrder, setSelectedOrder] = useState<OrderDetailsDto | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
-    
+
     useEffect(() => {
-        http.api.orderGetOrdersForList({limit: pageSize, startAt: page * pageSize}).then((res) => {
-            setOrders(res.data);
-        });
+        http.api.orderGetOrdersForList({ limit: pageSize, startAt: page * pageSize })
+            .then((res) => {
+                setOrders(res.data);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.message || "Failed to retrieve orders.");
+                } else {
+                    toast.error("An error occurred while retrieving the orders.");
+                }
+            });
     }, [page, pageSize]);
-    
+
+
     const handleOnClickOrder = async (orderId) => {
         const res = await http.api.orderGetOrderById(orderId);
         setSelectedOrder(res.data);
@@ -34,10 +42,20 @@ const OrdersList = () => {
 
     const handleStatusChange = () => {
         toast("Updating order list...");
-        http.api.orderGetOrdersForList({ limit: pageSize, startAt: page * pageSize }).then((res) => {
-            setOrders(res.data);
-        });
+        http.api.orderGetOrdersForList({ limit: pageSize, startAt: page * pageSize })
+            .then((res) => {
+                setOrders(res.data);
+                toast.success("Order list updated successfully!");
+            })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.message || "Failed to update order list.");
+                } else {
+                    toast.error("An error occurred while updating the order list.");
+                }
+            });
     };
+
 
     return (
         <div className="min-h-screen bg-customBlue flex flex-col items-center justify-start pt-16">
