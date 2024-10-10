@@ -7,6 +7,7 @@ import About from "./About";
 import Home from "./Home";
 import OrdersList from "./Order/OrdersList";
 import ProductsPage from "./Paper/ProductsPage.tsx";
+import CustomerOrderHistory from "./Order/CustomerOrderHistory"
 
 const App = () => {
 
@@ -20,6 +21,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/order" element={<OrdersList />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/myorders" element={<CustomerOrderHistory />} />
         </Routes>
 
     </>)

@@ -182,4 +182,22 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         
         return order;
     }
+
+    public List<Order> GetOrdersForCustomer(int customerId)
+    {
+        return context.Orders
+            .Include(o => o.Customer)
+            .Where(o => o.CustomerId == customerId)
+            .OrderByDescending(o => o.OrderDate)
+            .ToList();
+    }
+    
+    public Customer GetRandomCustomer()
+    {
+        int customerCount = context.Customers.Count();
+        if (customerCount == 0) return null;
+
+        int randomIndex = new Random().Next(customerCount);
+        return context.Customers.Skip(randomIndex).FirstOrDefault();
+    }
 }

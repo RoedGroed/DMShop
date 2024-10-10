@@ -30,6 +30,8 @@ public interface IDMShopService
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
     
     public OrderDetailsDto GetOrderDetailsById(int id);
+
+    public List<OrderListDto> GetRandomCustomerOrderHistory();
     
     public Order UpdateOrderStatus (int orderId, string newStatus);
 }
@@ -193,6 +195,15 @@ public class DMShopService(
         var order = DMShopRepository.GetOrderDetailsById(orderId);
         return OrderDetailsDto.FromEntity(order);
     }
+
+    public List<OrderListDto> GetRandomCustomerOrderHistory()
+    {
+        var customer = DMShopRepository.GetRandomCustomer();
+
+        var orders = DMShopRepository.GetOrdersForCustomer(customer.Id);
+        return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+    }
+
 
     public Order UpdateOrderStatus(int orderId, string newStatus)
     {

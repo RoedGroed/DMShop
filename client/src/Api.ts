@@ -265,6 +265,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Order
+     * @name OrderGetRandomCustomerOrderHistory
+     * @request GET:/api/Order/random-customer/orders
+     */
+    orderGetRandomCustomerOrderHistory: (params: RequestParams = {}) =>
+      this.request<OrderListDto[], any>({
+        path: `/api/Order/random-customer/orders`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Order
      * @name OrderUpdateOrderStatus
      * @request PUT:/api/Order/{orderId}/status
      */

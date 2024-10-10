@@ -21,5 +21,7 @@ public interface IDMShopRepository
     
     public List<Order> GetOrdersForList(int limit, int startAt);
     public Order GetOrderDetailsById(int orderId);
+    public List<Order> GetOrdersForCustomer(int customerId);
     public Order UpdateOrderStatus(int orderId, string newStatus);
+    public Customer GetRandomCustomer();
 }
