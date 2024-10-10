@@ -171,13 +171,20 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
     public Order GetOrderDetailsById(int orderId)
     {
-        var order = context.Orders
-            .Include(o => o.OrderEntries)
-                .ThenInclude(oe => oe.Product)
-            .Include(o => o.Customer)
-            .FirstOrDefault(o => o.Id == orderId);
+        try
+        {
+            var order = context.Orders
+                .Include(o => o.OrderEntries)
+                    .ThenInclude(oe => oe.Product)
+                .Include(o => o.Customer)
+                .FirstOrDefault(o => o.Id == orderId);
 
-        return order;
+            return order;
+        }
+        catch (Exception ex)
+        {
+            throw new DataAccessException($"Failed to retrieve order with ID {orderId}");
+        }    
     }
 
     public Order UpdateOrderStatus(int orderId, string newStatus)
@@ -208,10 +215,17 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     
     public Customer GetRandomCustomer()
     {
-        int customerCount = context.Customers.Count();
-        if (customerCount == 0) return null;
+        try
+        {
+            int customerCount = context.Customers.Count();
+            if (customerCount == 0) return null;
 
-        int randomIndex = new Random().Next(customerCount);
-        return context.Customers.Skip(randomIndex).FirstOrDefault();
+            int randomIndex = new Random().Next(customerCount);
+            return context.Customers.Skip(randomIndex).FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            throw new DataAccessException("Failed to retrieve a random customer");
+        }    
     }
 }

@@ -21,9 +21,9 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
             var orders = service.GetOrdersForList(limit, startAt);  
             return Ok(orders);
         }
-        catch (ServiceException)
+        catch (ServiceException ex)
         {
-            return StatusCode(500, new { error = "An error occurred while retrieving orders" });
+            return StatusCode(500, new { error = ex.Message });
         }    
     }
 
@@ -31,20 +31,30 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
     [Route("{orderId}")]
     public ActionResult<OrderDetailsDto> GetOrderById(int orderId)
     {
-        var orderDetail = service.GetOrderDetailsById(orderId);
-        return Ok(orderDetail);
+        try
+        {
+            var orderDetail = service.GetOrderDetailsById(orderId);
+            return Ok(orderDetail);
+        }
+        catch (ServiceException ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
     
     [HttpGet]
     [Route("random-customer/orders")]
     public ActionResult<List<OrderListDto>> GetRandomCustomerOrderHistory()
     {
-        var orders = service.GetRandomCustomerOrderHistory();
-        if (!orders.Any())
+        try
         {
-            return NotFound("No orders found for any customer");
+            var orders = service.GetRandomCustomerOrderHistory();
+            return Ok(orders);
         }
-        return Ok(orders);
+        catch (ServiceException ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 
     [HttpPut]
@@ -60,10 +70,6 @@ public class OrderController(IDMShopService service, IOptionsMonitor<AppOptions>
         {
             return StatusCode(500, new { message = ex.Message });
         }
-        catch (Exception ex) 
-        {
-            return StatusCode(500, new { message = "An unexpected error occurred" });
-        }    
     }
 
 }

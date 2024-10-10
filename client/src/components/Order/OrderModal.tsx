@@ -35,7 +35,7 @@ function OrderModal({ order, onClose }) {
                         {order.orderEntries.map(entry => (
                             <li key={entry.productName} className="p-2 bg-gray-900 rounded-lg mb-2 flex justify-between">
                                 <span>{entry.productName}</span>
-                                <span>{entry.quantity} x {entry.price?.toFixed(2)}DKK = <strong>{entry.totalPrice?.toFixed(2)}</strong> DKK</span>
+                                <span>{entry.quantity} x {entry.price?.toFixed(2)} = <strong>${entry.totalPrice?.toFixed(2)}</strong></span>
                             </li>
                         ))}
                     </ul>
@@ -44,7 +44,7 @@ function OrderModal({ order, onClose }) {
                 {/* Total Amount */}
                 <hr className="border-t border-gray-800 my-4" />
                 <div className="font-bold text-right">
-                    <p>Total: {order.totalAmount?.toFixed(2)} DKK</p>
+                    <p>Total: ${order.totalAmount?.toFixed(2)}</p>
                 </div>
             </div>
         </div>

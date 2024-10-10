@@ -30,22 +30,29 @@ const OrdersList = () => {
 
 
     const handleOnClickOrder = async (orderId) => {
-        const res = await http.api.orderGetOrderById(orderId);
-        setSelectedOrder(res.data);
-        setModalOpen(true)
+        try {
+            const res = await http.api.orderGetOrderById(orderId);
+            setSelectedOrder(res.data);
+            setModalOpen(true);
+        } catch (error) {
+            if (error.response) {
+                toast.error(error.response.data.error || "Failed to fetch order details.");
+            } else {
+                toast.error("An unexpected error occurred.");
+            }
+        }
     }
-    
+
+
     const handleCloseModal = () => {
         setModalOpen(false);
         setSelectedOrder(null);
     }
 
     const handleStatusChange = () => {
-        toast("Updating order list...");
         http.api.orderGetOrdersForList({ limit: pageSize, startAt: page * pageSize })
             .then((res) => {
                 setOrders(res.data);
-                toast.success("Order list updated successfully!");
             })
             .catch((error) => {
                 if (error.response) {
@@ -55,8 +62,7 @@ const OrdersList = () => {
                 }
             });
     };
-
-
+    
     return (
         <div className="min-h-screen bg-customBlue flex flex-col items-center justify-start pt-16">
             <ul className="space-y-2 w-3/4">
@@ -79,7 +85,7 @@ const OrdersList = () => {
                         </div>
                         
                         <p className="w-2/12">
-                            <span className="font-bold">Total:</span> {order.totalAmount.toFixed(2)} DKK
+                            <span className="font-bold">Total: $</span>{order.totalAmount.toFixed(2)} 
                         </p>
 
                         {/* Status */}
