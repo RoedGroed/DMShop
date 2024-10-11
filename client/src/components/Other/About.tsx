@@ -1,5 +1,5 @@
-import App from "./App.tsx";
-import '../Styles.css';
+import App from "../App.tsx";
+import '../../styles.css';
 
 export default function About() {
 

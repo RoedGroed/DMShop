@@ -156,18 +156,18 @@ INSERT INTO paper_properties (paper_id, property_id) VALUES
 
 -- Insert 12 orders with UTC timestamps
 INSERT INTO orders (order_date, delivery_date, status, total_amount, customer_id) VALUES
-                                                                                      ('2023-09-01T12:30:00Z', '2023-09-05', 'shipped', 100.50, 1),       -- Order 1 - shipped
-                                                                                      ('2023-09-10T14:00:00Z', '2023-09-15', 'delivered', 50.25, 2),      -- Order 2 - delivered
-                                                                                      ('2023-09-20T16:45:00Z', NULL, 'pending', 200.75, 3),               -- Order 3 - pending
-                                                                                      ('2023-08-15T11:00:00Z', '2023-08-20', 'cancelled', 120.00, 1),     -- Order 4 - cancelled
-                                                                                      ('2023-07-01T09:15:00Z', '2023-07-05', 'processing', 300.40, 2),    -- Order 5 - processing
-                                                                                      ('2023-06-25T16:00:00Z', '2023-06-28', 'delivered', 75.99, 3),      -- Order 6 - delivered
-                                                                                      ('2023-05-20T14:30:00Z', NULL, 'pending', 500.20, 4),               -- Order 7 - pending
-                                                                                      ('2023-04-12T13:00:00Z', '2023-04-17', 'shipped', 220.45, 5),       -- Order 8 - shipped
-                                                                                      ('2023-03-28T10:45:00Z', '2023-04-02', 'processing', 180.30, 4),    -- Order 9 - processing
-                                                                                      ('2023-02-10T15:50:00Z', '2023-02-15', 'cancelled', 99.99, 5),      -- Order 10 - cancelled
-                                                                                      ('2023-01-05T10:15:00Z', '2023-01-10', 'delivered', 149.99, 2),     -- Order 11 - delivered
-                                                                                      ('2022-12-25T12:00:00Z', NULL, 'pending', 89.50, 1);                -- Order 12 - pending
+                                                                                      ('2023-09-01T12:30:00Z', '2023-09-03', 'pending', 100.50, 1),       -- Order 1 - shipped
+                                                                                      ('2023-09-10T14:00:00Z', '2023-09-13', 'pending', 50.25, 2),      -- Order 2 - delivered
+                                                                                      ('2023-09-20T16:45:00Z', '2023-09-23', 'pending', 200.75, 3),               -- Order 3 - pending
+                                                                                      ('2023-08-15T11:00:00Z', '2023-08-18', 'pending', 120.00, 1),     -- Order 4 - cancelled
+                                                                                      ('2023-07-01T09:15:00Z', '2023-07-04', 'cancelled', 300.40, 2),    -- Order 5 - processing
+                                                                                      ('2023-06-25T16:00:00Z', '2023-06-28', 'processing', 75.99, 3),      -- Order 6 - delivered
+                                                                                      ('2023-05-20T14:30:00Z', '2023-05-23', 'processing', 500.20, 4),               -- Order 7 - pending
+                                                                                      ('2023-04-12T13:00:00Z', '2023-04-15', 'delivered', 220.45, 5),       -- Order 8 - shipped
+                                                                                      ('2023-03-28T10:45:00Z', '2023-03-31', 'delivered', 180.30, 4),    -- Order 9 - processing
+                                                                                      ('2023-02-10T15:50:00Z', '2023-02-13', 'delivered', 99.99, 5),      -- Order 10 - cancelled
+                                                                                      ('2023-01-05T10:15:00Z', '2023-01-8', 'delivered', 149.99, 2),     -- Order 11 - delivered
+                                                                                      ('2022-12-25T12:00:00Z', '2022-12-28', 'delivered', 89.50, 1);                -- Order 12 - pending
 
 -- Insert some order entries
 INSERT INTO order_entries (quantity, product_id, order_id) VALUES

@@ -1,9 +1,9 @@
-import '../ProductList.css';
-import ProductList from './webshop/ProductsList.tsx';
+import '../../ProductList.css';
+import ProductList from './ProductsList.tsx';
 import React, { useEffect, useState } from "react";
-import { http } from "../http";
-import { ProductDto, PropertyDto } from "../Api.ts";
-import { useCart } from "./webshop/CartContext.tsx";
+import { http } from "../../http";
+import { ProductDto, PropertyDto } from "../../Api.ts";
+import { useCart } from "./CartContext.tsx";
 
 const Webshop: React.FC = () => {
     const [products, setProducts] = useState<ProductDto[]>([]);

@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { CartItem } from './Interface.tsx';
 import {http} from "../../http.ts";
+import { toast } from 'react-hot-toast';
 
 interface CartContextType {
     cart: CartItem[];
@@ -54,7 +55,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const response = await http.api.orderCreateOrder(createOrder);
             setCart([]);
+            toast.success("Order placed successfully!");
         } catch (error) {
+            toast.error("Error placing order. Please try again.");
             console.error("Error creating order ", error);
         }
     };

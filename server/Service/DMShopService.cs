@@ -2,7 +2,6 @@
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Service.TransferModels.Requests;
 using Service.TransferModels.Responses;
 using Service.Validators;
@@ -211,7 +210,7 @@ public class DMShopService(
             OrderDate = createOrderDto.OrderDate,
             DeliveryDate = createOrderDto.DeliveryDate.Date != null 
                 ? DateOnly.FromDateTime(createOrderDto.DeliveryDate) 
-                : (DateOnly?)null,
+                : null,
             Status = createOrderDto.Status,
             TotalAmount = totalAmount,
             CustomerId = createOrderDto.CustomerId

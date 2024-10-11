@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Service;
 using Service.TransferModels.Responses;
 
@@ -7,7 +6,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProductController(IDMShopService service, IOptionsMonitor<AppOptions> options) : ControllerBase
+public class ProductController(IDMShopService service) : ControllerBase
 {
 
     [HttpGet]

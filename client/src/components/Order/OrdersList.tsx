@@ -7,6 +7,7 @@ import OrderModal from "./OrderModal";
 import StatusChanger from "./StatusChanger";
 import toast from "react-hot-toast";
 
+
 const OrdersList = () => {
     const [orders, setOrders] = useAtom(OrdersAtom);
     const [page, setPage] = useState(0);
@@ -19,7 +20,7 @@ const OrdersList = () => {
             .then((res) => {
                 setOrders(res.data);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response) {
                     toast.error(error.response.data.message || "Failed to retrieve orders.");
                 } else {
@@ -29,12 +30,12 @@ const OrdersList = () => {
     }, [page, pageSize]);
 
 
-    const handleOnClickOrder = async (orderId) => {
+    const handleOnClickOrder = async (orderId: number) => {
         try {
             const res = await http.api.orderGetOrderById(orderId);
             setSelectedOrder(res.data);
             setModalOpen(true);
-        } catch (error) {
+        } catch (error: any) {
             if (error.response) {
                 toast.error(error.response.data.error || "Failed to fetch order details.");
             } else {
@@ -72,7 +73,7 @@ const OrdersList = () => {
                 {orders.map((order) => (
                     <li key={order.id}
                         className="p-2 bg-gray-900 rounded-lg flex items-center text-white text-base cursor-pointer"
-                        onClick={() => handleOnClickOrder(order.id)}
+                        onClick={() => handleOnClickOrder(order.id ?? 0)}
                     >
                         {/* Order Information */}
                         <p className="w-2/12">
@@ -88,8 +89,9 @@ const OrdersList = () => {
                         </div>
 
                         <p className="w-2/12">
-                            <span className="font-bold">Total: $</span>{order.totalAmount.toFixed(2)}
+                            <span className="font-bold">Total: $</span>{order.totalAmount ? order.totalAmount.toFixed(2) : "0.00"}
                         </p>
+
 
                         {/* Status */}
                         <div className="w-2/12 flex items-center justify-end space-x-2">
@@ -108,8 +110,8 @@ const OrdersList = () => {
                                 className="w-1/6 justify-end space-x-2"
                                 onClick={(e) => e.stopPropagation()}>
                                 <StatusChanger
-                                    orderId={order.id}
-                                    currentStatus={order.status}
+                                    orderId={order.id ?? 0}
+                                    currentStatus={order.status ?? "N/A"}
                                     onStatusChange={handleStatusChange}
                                 />
                             </div>

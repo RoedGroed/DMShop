@@ -29,8 +29,7 @@ const StatusChanger = ({ orderId, currentStatus, onStatusChange }: StatusChanger
             setStatus(currentStatus);
         }
     };
-
-
+    
     return (
         <div className="relative">
             <CogIcon className="w-full h-full" />
