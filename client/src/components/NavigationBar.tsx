@@ -1,13 +1,15 @@
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
-import {useState} from "react";
+import { useCart } from "./webshop/CartContext.tsx";
+import ShoppingCart from "./webshop/ShoppingCart.tsx";
+import { useState } from "react";
 import { useAtom } from 'jotai';
 import { isAdminAtom } from '../atoms/IsAdminAtom';
 
-// @ts-ignore
 export default function NavigationBar() {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useAtom(isAdminAtom);
 
     function handleNavigate(route: string) {
@@ -18,7 +20,12 @@ export default function NavigationBar() {
     function toggleMenu() {
         setMenuOpen(!menuOpen);
     }
-    
+
+    function toggleCart() {
+        console.log("Toggling cart");
+        setCartOpen(!cartOpen);
+    }
+
     const handleRoleToggle = () => {
         setIsAdmin(!isAdmin);
     };
@@ -32,19 +39,20 @@ export default function NavigationBar() {
             </div>
 
             <div className='navbar-logo'>
-                <button className='logo' onClick={()=> handleNavigate('/')} />
+                <button className='logo' onClick={() => handleNavigate('/')} />
             </div>
-            {/* Buttons to different pages of the website */}
+
+            {/* Navigation buttons */}
             <div className='navigation-center'>
                 <button className='nav-buttons' onClick={() => handleNavigate("/webshop")}>Webstore</button>
                 <button className='nav-buttons' onClick={() => handleNavigate("/contact")}>Contact</button>
                 <button className='nav-buttons' onClick={() => handleNavigate("/about")}>About Us</button>
+                <button className='shoppingcart-image' onClick={toggleCart}></button>
             </div>
 
-            {/* The Burger Context */}
+            {/* Burger menu */}
             {menuOpen && (
                 <div className='context-menu'>
-                    {/* Toggle Button */}
                     <label className="flex cursor-pointer">
                         <span className="mr-1 text-white">Customer</span>
                         <div className="relative">
@@ -54,6 +62,7 @@ export default function NavigationBar() {
                         </div>
                         <span className="ml-1 text-white">Admin</span>
                     </label>
+
                     {isAdmin ? (
                         <>
                             <button className='context-button' onClick={() => handleNavigate('/products')}>Products</button>
@@ -65,6 +74,8 @@ export default function NavigationBar() {
                 </div>
             )}
 
+            {/* Shopping Cart Component */}
+            <ShoppingCart cartOpen={cartOpen} toggleCart={toggleCart} />
         </div>
-    )
+    );
 }

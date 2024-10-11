@@ -1,6 +1,7 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace DataAccess;
 
@@ -39,8 +40,6 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
         return paper;
     }
-
-
 
     public Paper DeletePaper(int id, List<int> propertyIds)
     {
@@ -109,6 +108,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         {
             paper.Properties.Add(property);
         }
+
         context.SaveChanges();
     }
 
@@ -203,6 +203,20 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             throw new DataAccessException("Failed to update the order status in the database");
         }
     }
+
+    public Order CreateOrder(Order order, List<OrderEntry> orderEntries)
+    {
+        context.Orders.Add(order);
+        context.OrderEntries.AddRange(orderEntries);
+        context.SaveChanges();
+        return order;
+    }
+
+    public List<Paper> GetPaperByIds(List<int> paperIds)
+    {
+        return context.Papers.Where(paper => paperIds.Contains(paper.Id)).ToList();
+    }
+    
 
     public List<Order> GetOrdersForCustomer(int customerId)
     {

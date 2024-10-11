@@ -2,6 +2,7 @@
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Service.TransferModels.Requests;
 using Service.TransferModels.Responses;
 using Service.Validators;
@@ -10,30 +11,21 @@ namespace Service;
 
 public interface IDMShopService
 {
+
+    OrderDto CreateOrder(CreateOrderDTO createOrderDto);
     public List<ProductDto> GetAllPapers();
-    
     public List<ProductDto> GetAllPapersWithProperties();
-
     public ProductDto CreatePaper(ProductDto productDto);
-
     ProductDto DeletePaper(int id, ProductDto productDto);
-
     ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds);
-
     ProductDto GetPaperById(int id);
-
     List<PropertyDto> GetAllProperties();
-
     PropertyDto CreateProperty(PropertyDto propertyDto);
     PropertyDto DeleteProperty(int propertyId);
     PropertyDto UpdateProperty(PropertyDto propertyDto);
-
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
-    
     public OrderDetailsDto GetOrderDetailsById(int id);
-
     public List<OrderListDto> GetRandomCustomerOrderHistory();
-    
     public Order UpdateOrderStatus (int orderId, string newStatus);
 }
 
@@ -197,6 +189,43 @@ public class DMShopService(
             throw new ServiceException("Failed to retrieve orders from the service layer");
         }    
     }
+
+    public OrderDto CreateOrder(CreateOrderDTO createOrderDto)
+    {
+        double totalAmount = 0;
+        
+        var paperIds = createOrderDto.OrderEntries.Select(o => o.ProductId).ToList();
+        var papers = DMShopRepository.GetPaperByIds(paperIds);
+
+        foreach (var entry in createOrderDto.OrderEntries)
+        {
+            var paper = papers.FirstOrDefault(p => p.Id == entry.ProductId);
+            if (paper != null)
+            {
+                totalAmount += paper.Price * entry.Quantity;
+            }
+        }
+        
+        var order = new Order
+        {
+            OrderDate = createOrderDto.OrderDate,
+            DeliveryDate = createOrderDto.DeliveryDate.Date != null 
+                ? DateOnly.FromDateTime(createOrderDto.DeliveryDate) 
+                : (DateOnly?)null,
+            Status = createOrderDto.Status,
+            TotalAmount = totalAmount,
+            CustomerId = createOrderDto.CustomerId
+        };
+        var orderEntries = createOrderDto.OrderEntries.Select(entry => new OrderEntry
+        {
+            ProductId = entry.ProductId,
+            Quantity = entry.Quantity,
+            Order = order
+        }).ToList();
+        var createdOrder = DMShopRepository.CreateOrder(order, orderEntries);
+        return OrderDto.FromEntity(createdOrder);
+    }
+    
 
     public OrderDetailsDto GetOrderDetailsById(int orderId)
     {
