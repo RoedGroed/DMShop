@@ -154,6 +154,8 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
     public List<Paper> GetPapersByProperties(List<int> propertyIds)
     {
-        return context.Papers.Where(p => p.Properties.Any(prop => propertyIds.Contains(prop.Id))).ToList();
+        return context.Papers
+            .Where(p => p.Properties.Any(prop => propertyIds.Contains(prop.Id)))
+            .ToList();
     }
 }

@@ -2,7 +2,7 @@ import '../ProductList.css';
 import ProductList from './webshop/ProductsList.tsx'
 import React, {useEffect, useState} from "react";
 import { http } from "../http";
-import {ProductDto} from "../Api.ts";
+import {ProductDto, PropertyDto} from "../Api.ts";
 import {useCart} from "./webshop/CartContext.tsx";
 
 
@@ -12,11 +12,12 @@ const Webshop: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const {addToCart} = useCart();
+    const [selectedProduct, setSelectedProduct] = useState<number[]>([]);
+    const [properties, setProperties] = useState<{ id: number, name: string }[]>([]);
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await http.api.productGetAllPapersWithProperties();
-                setProducts(products);
                 const productData: ProductDto[] = response.data.map((item: ProductDto) => ({
                     id: item.id || 0,
                     name: item.name || 'Unknown Product',
@@ -32,12 +33,56 @@ const Webshop: React.FC = () => {
             }
         };
 
+        const fetchProperties = async () => {
+            try {
+                const response = await http.api.propertyGetAllProperties();  
+                const transformProperties = response.data.map((property: PropertyDto) => ({
+                    id: property.id as number,
+                    name: property.propertyName as string,
+                }));
+                setProperties(transformProperties);
+            } catch (error) {
+                setError('Error fetching properties');
+            }
+        };
         fetchProducts();
+        fetchProperties();
     }, []);
 
+    const handleFilter = async () => {
+        console.log("Filter button clicked"); // Check if this gets logged
 
+        console.log("Selected Property IDs:", selectedProduct);
+        try {
+            const response = await http.api.productGetPapersByProperties({
+                propertyIds: Array.isArray(selectedProduct) ? selectedProduct : [selectedProduct]
+            });
+
+            console.log("API Response:", response.data); // Check what you receive from the API
+
+            if (Array.isArray(response.data) && response.data.length > 0) {
+                setProducts(response.data);
+                console.log("Sent data: ", response.data);
+            } else {
+                console.warn("No products found for selected properties.");
+            }
+        } catch (error) {
+            console.error('Error fetching filtered products:', error);
+            setError('Error fetching filtered products');
+        }
+    };
+
+
+    const handlePropertySelection = (propertyId: number | undefined) => {
+        if (propertyId !== undefined) {
+            setSelectedProduct(prev =>
+                prev.includes(propertyId) ? prev.filter(id => id !== propertyId) : [...prev, propertyId]
+            );
+        }
+    };
+    
     if (loading) {
-        return <div>Loading...</div>; // Loading state
+        return <div>Loading...</div>; 
     }
 
     if (error) {
@@ -47,7 +92,23 @@ const Webshop: React.FC = () => {
     return (
         <div className="background">
             <h1 className="product-text-header">Product List</h1>
-            <ProductList products={products} addToCart={addToCart} />
+            <div>
+                <h2>Filter by Properties</h2>
+                {properties.map(property => (
+                    <div key={property.id}>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={selectedProduct.includes(property.id)}
+                                onChange={() => handlePropertySelection(property.id)}
+                            />
+                            {property.name}
+                        </label>
+                    </div>
+                ))}
+                <button onClick={handleFilter}>Filter</button>
+            </div>
+            <ProductList products={products} addToCart={addToCart}/>
         </div>
     );
 };
