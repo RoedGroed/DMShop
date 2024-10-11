@@ -1,6 +1,7 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace DataAccess;
 
@@ -150,5 +151,9 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     {
         return context.Papers.Where(paper => paperIds.Contains(paper.Id)).ToList();
     }
-    
+
+    public List<Paper> GetPapersByProperties(List<int> propertyIds)
+    {
+        return context.Papers.Where(p => p.Properties.Any(prop => propertyIds.Contains(prop.Id))).ToList();
+    }
 }

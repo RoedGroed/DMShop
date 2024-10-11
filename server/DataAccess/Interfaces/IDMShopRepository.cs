@@ -20,6 +20,8 @@ public interface IDMShopRepository
     public List<Order> GetOrdersForList(int limit, int startAt);
 
     public Order GetOrderDetailsById(int orderId);
+    
+    public List<Paper> GetPapersByProperties(List<int> propertyIds);
 
   
 }

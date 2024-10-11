@@ -26,6 +26,8 @@ public interface IDMShopService
     List<PropertyDto> GetAllProperties();
 
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
+    public List<ProductDto> GetPapersByProperties(List<int> propertyIds);
+
 }
 
 
@@ -177,5 +179,11 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         }).ToList();
         var createdOrder = DMShopRepository.CreateOrder(order, orderEntries);
         return OrderDto.FromEntity(createdOrder);
+    }
+
+    public List<ProductDto> GetPapersByProperties(List<int> propertyIds)
+    {
+        var papers = DMShopRepository.GetPapersByProperties(propertyIds);
+        return papers.Select(p => ProductDto.FromEntity(p)).ToList();
     }
 }
