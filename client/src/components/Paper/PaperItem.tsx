@@ -30,10 +30,10 @@ const PaperItem: React.FC<PaperItemProps> = ({ paper, openModal }) => {
             <div className="flex items-center space-x-2">
                 {/* Update Button */}
                 <button
-                    className="flex items-center justify-center h-6 w-6 rounded-full border border-gray-300 p-0"
+                    className="flex items-center justify-center h-7 w-7 rounded-full p-0"
                     onClick={() => openModal(paper)}
                 >
-                    <CogIcon className="w-5 h-5 text-white hover:text-customBlue" />
+                    <CogIcon className="w-full h-full text-white hover:text-customBlue" />
                 </button>
 
                 {/* Pass the entire ProductDto to the DeletePaperButton */}
