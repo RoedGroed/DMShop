@@ -11,6 +11,9 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -39,7 +42,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }));
         console.log("Order Entries:", orderEntries);
         const createOrder = {
-            customerId: 1,
+            customerId: getRandomInt(5+1),
             items: orderEntries,
             orderDate: new Date().toISOString(),
             deliveryDate: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),

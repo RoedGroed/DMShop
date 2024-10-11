@@ -25,9 +25,6 @@ public interface IDMShopRepository
 
     public Order GetOrderDetailsById(int orderId);
     
-    public List<Paper> GetPapersByProperties(List<int> propertyIds);
-
-  
     public List<Order> GetOrdersForCustomer(int customerId);
     public Order UpdateOrderStatus(int orderId, string newStatus);
     public Customer GetRandomCustomer();

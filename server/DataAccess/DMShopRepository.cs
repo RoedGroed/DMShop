@@ -216,17 +216,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     {
         return context.Papers.Where(paper => paperIds.Contains(paper.Id)).ToList();
     }
-
-    public List<Paper> GetPapersByProperties(List<int> propertyIds)
-    {
-        // Log the incoming property IDs
-        Console.WriteLine("Received property IDs: " + string.Join(", ", propertyIds));
-
-        return context.Papers
-            .Include(p => p.Properties)
-            .Where(p => p.Properties.Any(prop => propertyIds.Contains(prop.Id)))
-            .ToList();
-    }
+    
 
     public List<Order> GetOrdersForCustomer(int customerId)
     {

@@ -24,7 +24,6 @@ public interface IDMShopService
     PropertyDto DeleteProperty(int propertyId);
     PropertyDto UpdateProperty(PropertyDto propertyDto);
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
-    public List<ProductDto> GetPapersByProperties(List<int> propertyIds);
     public OrderDetailsDto GetOrderDetailsById(int id);
     public List<OrderListDto> GetRandomCustomerOrderHistory();
     public Order UpdateOrderStatus (int orderId, string newStatus);
@@ -226,27 +225,7 @@ public class DMShopService(
         var createdOrder = DMShopRepository.CreateOrder(order, orderEntries);
         return OrderDto.FromEntity(createdOrder);
     }
-
-    public List<ProductDto> GetPapersByProperties(List<int> propertyIds)
-    {
-        // Directly use the instance variable for DMShopRepository
-        var papers = DMShopRepository.GetPapersByProperties(propertyIds);
-
-        // Map to ProductDto
-        return papers.Select(p => new ProductDto
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Price = p.Price,
-            Stock = p.Stock,
-            Discontinued = p.Discontinued,
-            Properties = p.Properties.Select(prop => new PropertyDto
-            {
-                Id = prop.Id,
-                PropertyName = prop.PropertyName
-            }).ToList()
-        }).ToList();
-    }
+    
 
     public OrderDetailsDto GetOrderDetailsById(int orderId)
     {

@@ -95,13 +95,5 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
         }
         return Ok(paper);
     }
-
-    [HttpGet]
-    [Route("filter")]
-    public IActionResult GetPapersByProperties([FromQuery] List<int> propertyIds)
-    {
-        var papers = service.GetPapersByProperties(propertyIds);
-        return Ok(papers);
-    }
     
 }

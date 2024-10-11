@@ -446,26 +446,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Product
-     * @name ProductGetPapersByProperties
-     * @request GET:/api/Product/filter
-     */
-    productGetPapersByProperties: (
-      query?: {
-        propertyIds?: number[];
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<File, any>({
-        path: `/api/Product/filter`,
-        method: "GET",
-        query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Property
      * @name PropertyGetAllProperties
      * @request GET:/api/Property
