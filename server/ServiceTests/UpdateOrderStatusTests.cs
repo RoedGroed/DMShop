@@ -1,6 +1,5 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
-using FluentValidation;
 using Moq;
 using Service;
 using Service.Validators;
@@ -40,7 +39,7 @@ public class UpdateOrderStatusTests
     }
 
     [Fact]
-    public void UpdateOrderStatus_Should_ThrowValidationException_When_Status_Is_Invalid()
+    public void UpdateOrderStatus_Should_ThrowsException_When_Status_Is_Invalid()
     {
         // Arrange
         var orderId = 1;
