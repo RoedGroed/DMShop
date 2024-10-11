@@ -1,10 +1,10 @@
 import {Route, Routes} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import NavigationBar from "./NavigationBar.tsx";
-import Webshop from "./Webshop.tsx";
-import Contact from "./Contact";
-import About from "./About";
-import Home from "./Home";
+import Webshop from "./webshop/Webshop.tsx";
+import Contact from "./Other/Contact";
+import About from "./Other/About";
+import Home from "./Other/Home";
 import OrdersList from "./Order/OrdersList";
 import ProductsPage from "./Paper/ProductsPage.tsx";
 import {CartItem} from "./webshop/Interface.tsx";

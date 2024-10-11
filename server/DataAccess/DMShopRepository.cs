@@ -1,7 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace DataAccess;
 
@@ -163,7 +162,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
                 .Take(limit)
                 .ToList();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw new DataAccessException("Failed to retrieve orders from the database");
         }
@@ -181,7 +180,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
             return order;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw new DataAccessException($"Failed to retrieve order with ID {orderId}");
         }    
@@ -237,7 +236,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             int randomIndex = new Random().Next(customerCount);
             return context.Customers.Skip(randomIndex).FirstOrDefault();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw new DataAccessException("Failed to retrieve a random customer");
         }    

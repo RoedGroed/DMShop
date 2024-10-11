@@ -3,9 +3,11 @@ using PgCtx;
 using SharedTestDependencies;
 using Xunit;
 
+namespace DataAccessTests;
+    
 public class UpdateOrderStatusTest
 {
-    private readonly PgCtxSetup<DMShopContext> setup = new();
+    private readonly PgCtxSetup<DMShopContext> _setup = new();
     
     [Fact]
     public void UpdateOrderStatus_ReturnsCorrectOrderAfterUpdate()
@@ -13,11 +15,11 @@ public class UpdateOrderStatusTest
         // Arrange:
         var testOrder = TestObjects.GetOrder();
         testOrder.Status = "processing";
-        setup.DbContextInstance.Orders.Add(testOrder);
-        setup.DbContextInstance.SaveChanges();
+        _setup.DbContextInstance.Orders.Add(testOrder);
+        _setup.DbContextInstance.SaveChanges();
 
         // Act:
-        var repository = new DMShopRepository(setup.DbContextInstance);
+        var repository = new DMShopRepository(_setup.DbContextInstance);
         var updatedOrder = repository.UpdateOrderStatus(testOrder.Id, "cancelled");
 
         // Assert:

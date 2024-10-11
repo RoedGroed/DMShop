@@ -4,6 +4,8 @@ using PgCtx;
 using SharedTestDependencies;
 using Xunit;
 
+namespace DataAccessTests;
+    
 public class GetOrdersForListTest
 {
     private readonly PgCtxSetup<DMShopContext> _setup = new();
