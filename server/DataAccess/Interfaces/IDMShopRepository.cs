@@ -13,6 +13,10 @@ public interface IDMShopRepository
     Paper CreatePaper(Paper paper, List<int> propertyIds);
     Paper DeletePaper(int id, List<int> propertyIds);
     Paper UpdatePaper(Paper paper, List<int> propertyIds);
+    
+    Property CreateProperty(Property property);
+    void DeleteProperty(int propertyId);
+    Property UpdateProperty(Property updatedProperty);
 
     List<Property> GetAllProperties();
     void AddPropertiesToPaper(int paperId, List<int> propertyIds);
@@ -24,4 +28,7 @@ public interface IDMShopRepository
     public List<Paper> GetPapersByProperties(List<int> propertyIds);
 
   
+    public List<Order> GetOrdersForCustomer(int customerId);
+    public Order UpdateOrderStatus(int orderId, string newStatus);
+    public Customer GetRandomCustomer();
 }

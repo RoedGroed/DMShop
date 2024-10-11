@@ -81,14 +81,39 @@ INSERT INTO paper (name, discontinued, stock, price) VALUES
                                                          ('A4 Paper', FALSE, 500, 10.50),
                                                          ('A3 Paper', FALSE, 300, 15.75),
                                                          ('Glossy Photo Paper', FALSE, 200, 25.00),
-                                                         ('Recycled Paper', TRUE, 50, 8.25);
+                                                         ('Recycled Paper', TRUE, 50, 8.25),
+                                                         ('Premium A4 Paper', FALSE, 400, 12.00),
+                                                         ('Colored Paper', FALSE, 300, 14.25),
+                                                         ('Matte Photo Paper', FALSE, 250, 20.50),
+                                                         ('Glossy Brochure Paper', FALSE, 100, 18.75),
+                                                         ('Eco-Friendly Paper', TRUE, 50, 9.00),
+                                                         ('Cardstock Paper', FALSE, 600, 22.00),
+                                                         ('Transparency Film', FALSE, 200, 30.00),
+                                                         ('Heavyweight Paper', FALSE, 100, 16.50),
+                                                         ('Notebook Refill Paper', FALSE, 500, 6.75),
+                                                         ('Label Paper', FALSE, 350, 11.50),
+                                                         ('Thermal Paper Roll', FALSE, 250, 5.50),
+                                                         ('High-Resolution Photo Paper', FALSE, 150, 27.00),
+                                                         ('Perforated Paper', FALSE, 300, 13.50),
+                                                         ('Continuous Form Paper', FALSE, 200, 15.00),
+                                                         ('Legal Size Paper', FALSE, 400, 12.50);
 
 -- Insert some properties
 INSERT INTO properties (property_name) VALUES
                                            ('Color: White'),
                                            ('Weight: 80gsm'),
                                            ('Finish: Glossy'),
-                                           ('Environment: Recycled');
+                                           ('Environment: Recycled'),
+                                           ('Color: Blue'),
+                                           ('Color: Yellow'),
+                                           ('Weight: 100gsm'),
+                                           ('Finish: Matte'),
+                                           ('Environment: FSC Certified'),
+                                           ('Size: A5'),
+                                           ('Size: A3'),
+                                           ('Usage: Thermal Printing'),
+                                           ('Purpose: Labeling'),
+                                           ('Format: Continuous Form');
 
 -- Insert relationships between paper and properties
 INSERT INTO paper_properties (paper_id, property_id) VALUES
@@ -100,7 +125,34 @@ INSERT INTO paper_properties (paper_id, property_id) VALUES
                                                          (3, 2),  -- Glossy Photo Paper is 80gsm
                                                          (3, 3),  -- Glossy Photo Paper is Glossy Finish
                                                          (4, 1),  -- Recycled Paper is White
-                                                         (4, 4);  -- Recycled Paper is Recycled
+                                                         (4, 4), -- Recycled Paper is Recycled
+                                                         (5, 1),  -- Premium A4 Paper is White
+                                                         (5, 3),  -- Premium A4 Paper is 100gsm
+                                                         (6, 7),  -- Colored Paper is A3
+                                                         (6, 2),  -- Colored Paper is White
+                                                         (7, 4),  -- Matte Photo Paper has a Matte Finish
+                                                         (7, 3),  -- Matte Photo Paper is 100gsm
+                                                         (8, 3),  -- Glossy Brochure Paper is 100gsm
+                                                         (8, 4),  -- Glossy Brochure Paper has a Glossy Finish
+                                                         (9, 10), -- Eco-Friendly Paper is FSC Certified
+                                                         (10, 6), -- Cardstock Paper is A5 size
+                                                         (10, 3), -- Cardstock Paper is 100gsm
+                                                         (11, 8), -- Transparency Film is for Thermal Printing
+                                                         (11, 3), -- Transparency Film is 100gsm
+                                                         (12, 1), -- Heavyweight Paper is White
+                                                         (12, 9), -- Heavyweight Paper is for Labeling
+                                                         (13, 1), -- Notebook Refill Paper is White
+                                                         (13, 6), -- Notebook Refill Paper is A5
+                                                         (14, 8), -- Label Paper is for Thermal Printing
+                                                         (14, 9), -- Label Paper is for Labeling
+                                                         (15, 7), -- Thermal Paper Roll is A3
+                                                         (15, 8), -- Thermal Paper Roll is for Thermal Printing
+                                                         (16, 1), -- High-Resolution Photo Paper is White
+                                                         (16, 4), -- High-Resolution Photo Paper has a Matte Finish
+                                                         (17, 9), -- Perforated Paper is for Labeling
+                                                         (18, 10), -- Continuous Form Paper is in Continuous Form
+                                                         (19, 5), -- Legal Size Paper is FSC Certified
+                                                         (19, 3); -- Legal Size Paper is 100gsm
 
 -- Insert 12 orders with UTC timestamps
 INSERT INTO orders (order_date, delivery_date, status, total_amount, customer_id) VALUES

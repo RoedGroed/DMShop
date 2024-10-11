@@ -17,7 +17,7 @@ public class CreateOrderServiceTest
     public CreateOrderServiceTest()
     {
         mockRepository = new Mock<IDMShopRepository>();
-        service = new DMShopService(mockRepository.Object);
+        service = new DMShopService(mockRepository.Object, null);
     }
 
     [Fact]

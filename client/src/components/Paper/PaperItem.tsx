@@ -5,7 +5,7 @@ import DeletePaperButton from "./DeletePaperButton";
 
 interface PaperItemProps {
     paper: ProductDto;
-    openModal: (paper: ProductDto) => void; // Function prop to open modal
+    openModal: (paper: ProductDto) => void;
 }
 
 const PaperItem: React.FC<PaperItemProps> = ({ paper, openModal }) => {
@@ -14,7 +14,7 @@ const PaperItem: React.FC<PaperItemProps> = ({ paper, openModal }) => {
             <p className="flex-1">{paper.name}</p>
             <p className="flex-1">Price: ${paper.price?.toFixed(2) || "0.00"}</p>
 
-            <div className="flex-1 text-xs space-y-0.5">
+            <div className="flex-1 space-y-0.5 ">
                 <p>Stock: {paper.stock || 0}</p>
                 <p>Discontinued: {paper.discontinued ? "Yes" : "No"}</p>
             </div>

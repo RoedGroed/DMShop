@@ -9,16 +9,17 @@ namespace Service.TransferModels.Responses
         public int? ProductId { get; set; }
         public string? ProductName { get; set; }
         public double? Price { get; set; }
+        public double TotalPrice { get; set; }
 
         public static OrderEntryDto FromEntity(OrderEntry orderEntry)
         {
             return new OrderEntryDto
-            {
-                Id = orderEntry.Id,
+            { 
                 Quantity = orderEntry.Quantity, 
                 ProductId = orderEntry.ProductId,
-                ProductName = orderEntry.Product?.Name ?? "Unknown",
-                Price = orderEntry.Product?.Price
+                ProductName = orderEntry.Product?.Name,
+                Price = orderEntry.Product?.Price,
+                TotalPrice = orderEntry.Product.Price * orderEntry.Quantity
             };
         }
     }

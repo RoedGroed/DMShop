@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using DataAccess;
+using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
 using Service.TransferModels.Requests;
@@ -12,26 +13,27 @@ public interface IDMShopService
 
     OrderDto CreateOrder(CreateOrderDTO createOrderDto);
     public List<ProductDto> GetAllPapers();
-    
     public List<ProductDto> GetAllPapersWithProperties();
-
     public ProductDto CreatePaper(ProductDto productDto);
-
     ProductDto DeletePaper(int id, ProductDto productDto);
-
     ProductDto UpdatePaper(int id, ProductDto productDto, List<int> propertyIds);
-
     ProductDto GetPaperById(int id);
-
     List<PropertyDto> GetAllProperties();
-
+    PropertyDto CreateProperty(PropertyDto propertyDto);
+    PropertyDto DeleteProperty(int propertyId);
+    PropertyDto UpdateProperty(PropertyDto propertyDto);
     public List<OrderListDto> GetOrdersForList(int limit, int startAt);
     public List<ProductDto> GetPapersByProperties(List<int> propertyIds);
-
+    public OrderDetailsDto GetOrderDetailsById(int id);
+    public List<OrderListDto> GetRandomCustomerOrderHistory();
+    public Order UpdateOrderStatus (int orderId, string newStatus);
 }
 
 
-public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
+public class DMShopService(
+    IDMShopRepository DMShopRepository,
+    IValidator<UpdateOrderStatusDTO> updateOrderStatusValidator
+    ) :IDMShopService
 {
     public List<ProductDto> GetAllPapers()
     {
@@ -90,6 +92,7 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
         return ProductDto.FromEntity(createdPaper);
     }
 
+
     public ProductDto DeletePaper(int id, ProductDto productDto)
     {
         // Extract property IDs from the productDto
@@ -138,11 +141,53 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
 
         }).ToList();
     }
+    
+    public PropertyDto CreateProperty(PropertyDto propertyDto)
+    {
+        var validator = new PropertyValidator();
+        validator.ValidateAndThrow(propertyDto);
+        
+        var property = new Property
+        {
+            PropertyName = propertyDto.PropertyName
+        };
+        var createdProperty = DMShopRepository.CreateProperty(property);
+        return new PropertyDto { Id = createdProperty.Id, PropertyName = createdProperty.PropertyName };
+    }
+    
+    public PropertyDto DeleteProperty(int propertyId)
+    {
+        DMShopRepository.DeleteProperty(propertyId);
+        return null; 
+    }
+
+    public PropertyDto UpdateProperty(PropertyDto propertyDto)
+    {
+        
+        var validator = new PropertyValidator();
+        validator.ValidateAndThrow(propertyDto);
+
+        var property = new Property
+        {
+            Id = propertyDto.Id,
+            PropertyName = propertyDto.PropertyName
+        };
+
+        var updatedProperty = DMShopRepository.UpdateProperty(property);
+        return new PropertyDto { Id = updatedProperty.Id, PropertyName = updatedProperty.PropertyName };
+    }
 
     public List<OrderListDto> GetOrdersForList(int limit, int startAt)
     {
-        var orders = DMShopRepository.GetOrdersForList(limit, startAt);
-        return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+        try
+        {
+            var orders = DMShopRepository.GetOrdersForList(limit, startAt);
+            return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+        }
+        catch (DataAccessException)
+        {
+            throw new ServiceException("Failed to retrieve orders from the service layer");
+        }    
     }
 
     public OrderDto CreateOrder(CreateOrderDTO createOrderDto)
@@ -185,5 +230,58 @@ public class DMShopService(IDMShopRepository DMShopRepository) :IDMShopService
     {
         var papers = DMShopRepository.GetPapersByProperties(propertyIds);
         return papers.Select(p => ProductDto.FromEntity(p)).ToList();
+    }
+
+    public OrderDetailsDto GetOrderDetailsById(int orderId)
+    {
+        try
+        {
+            var order = DMShopRepository.GetOrderDetailsById(orderId);
+            return OrderDetailsDto.FromEntity(order);
+        }
+        catch (DataAccessException ex)
+        {
+            throw new ServiceException(ex.Message);
+        }
+    }
+
+    public List<OrderListDto> GetRandomCustomerOrderHistory()
+    {
+        try
+        {
+            var customer = DMShopRepository.GetRandomCustomer();
+            if (customer == null) throw new ServiceException("No customers found.");
+
+            var orders = DMShopRepository.GetOrdersForCustomer(customer.Id);
+            if (orders == null || !orders.Any()) throw new ServiceException("No orders found for the customer.");
+            
+            return orders.Select(order => OrderListDto.FromEntity(order)).ToList();
+        }
+        catch (DataAccessException ex)
+        {
+            throw new ServiceException(ex.Message);
+        }
+    }
+
+
+    public Order UpdateOrderStatus(int orderId, string newStatus)
+    {
+        try
+        {
+            var updateStatusDto = new UpdateOrderStatusDTO { newStatus = newStatus };
+            updateOrderStatusValidator.ValidateAndThrow(updateStatusDto);
+            
+            var updatedOrder = DMShopRepository.UpdateOrderStatus(orderId, newStatus);
+            
+            return updatedOrder;
+        }
+        catch (ValidationException)
+        {
+            throw new ServiceException("Invalid status update request");
+        }
+        catch (DataAccessException ex)
+        {
+            throw new ServiceException(ex.Message);
+        }    
     }
 }

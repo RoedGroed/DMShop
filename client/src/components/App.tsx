@@ -9,13 +9,16 @@ import OrdersList from "./Order/OrdersList";
 import ProductsPage from "./Paper/ProductsPage.tsx";
 import {CartItem} from "./webshop/Interface.tsx";
 import {CartProvider} from "./webshop/CartContext.tsx";
+import CustomerOrderHistory from "./Order/CustomerOrderHistory"
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
 
 
     return (<>
         <CartProvider>
-        <NavigationBar/>
+        <NavigationBar />
+        <Toaster />
         <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/webshop" element={<Webshop />} />
@@ -23,6 +26,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/order" element={<OrdersList />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/myorders" element={<CustomerOrderHistory />} />
         </Routes>
         </CartProvider>
 

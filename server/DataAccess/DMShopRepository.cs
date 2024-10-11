@@ -7,7 +7,6 @@ namespace DataAccess;
 
 public class DMShopRepository(DMShopContext context) : IDMShopRepository
 {
-    
     public List<Paper> GetAllPapers()
     {
         return context.Papers.ToList();
@@ -117,26 +116,92 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     {
         return context.Properties.ToList();
     }
+    
+    
+    public Property CreateProperty(Property property)
+    {
+        context.Properties.Add(property);
+        context.SaveChanges();
 
+        return property;
+    }
+
+    public void DeleteProperty(int propertyId)
+    {
+        // Remove associations in the join table.
+        var property = context.Properties
+            .Include(p => p.Papers)  // Load related papers
+            .FirstOrDefault(p => p.Id == propertyId);
+        
+        // Remove the associations with the paper
+        property.Papers.Clear();
+        
+        // remove the property in its own table
+        context.Properties.Remove(property);
+        context.SaveChanges();
+    }
+
+    public Property UpdateProperty(Property updatedProperty)
+    {
+        var existingProperty = context.Properties.FirstOrDefault(p => p.Id == updatedProperty.Id);
+        
+        existingProperty.PropertyName = updatedProperty.PropertyName;
+
+        context.SaveChanges();
+        return existingProperty;
+    }
+    
+    
     public List<Order> GetOrdersForList(int limit, int startAt)
     {
-        return context.Orders
-            .Include(o => o.Customer)
-            .OrderBy(o => o.Id)
-            .Skip(startAt)
-            .Take(limit)
-            .ToList();
+        try
+        {
+            return context.Orders
+                .Include(o => o.Customer)
+                .OrderBy(o => o.Id)
+                .Skip(startAt)
+                .Take(limit)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new DataAccessException("Failed to retrieve orders from the database");
+        }
     }
 
     public Order GetOrderDetailsById(int orderId)
     {
-        var order = context.Orders
-            .Include(o => o.OrderEntries)
-                .ThenInclude(oe => oe.Product)
-            .Include(o => o.Customer)
-            .FirstOrDefault(o => o.Id == orderId);
+        try
+        {
+            var order = context.Orders
+                .Include(o => o.OrderEntries)
+                    .ThenInclude(oe => oe.Product)
+                .Include(o => o.Customer)
+                .FirstOrDefault(o => o.Id == orderId);
 
-        return order;
+            return order;
+        }
+        catch (Exception ex)
+        {
+            throw new DataAccessException($"Failed to retrieve order with ID {orderId}");
+        }    
+    }
+
+    public Order UpdateOrderStatus(int orderId, string newStatus)
+    {
+        try
+        {
+            var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
+            
+            order.Status = newStatus;
+            context.SaveChanges();
+            
+            return order;
+        }
+        catch (Exception)
+        {
+            throw new DataAccessException("Failed to update the order status in the database");
+        }
     }
 
     public Order CreateOrder(Order order, List<OrderEntry> orderEntries)
@@ -157,5 +222,30 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         return context.Papers
             .Where(p => p.Properties.Any(prop => propertyIds.Contains(prop.Id)))
             .ToList();
+    }
+
+    public List<Order> GetOrdersForCustomer(int customerId)
+    {
+        return context.Orders
+            .Include(o => o.Customer)
+            .Where(o => o.CustomerId == customerId)
+            .OrderByDescending(o => o.OrderDate)
+            .ToList();
+    }
+    
+    public Customer GetRandomCustomer()
+    {
+        try
+        {
+            int customerCount = context.Customers.Count();
+            if (customerCount == 0) return null;
+
+            int randomIndex = new Random().Next(customerCount);
+            return context.Customers.Skip(randomIndex).FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            throw new DataAccessException("Failed to retrieve a random customer");
+        }    
     }
 }
