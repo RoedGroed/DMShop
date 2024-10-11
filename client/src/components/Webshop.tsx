@@ -50,19 +50,19 @@ const Webshop: React.FC = () => {
     }, []);
 
     const handleFilter = async () => {
-        console.log("Filter button clicked"); // Check if this gets logged
-
+        console.log("Filter button clicked");
         console.log("Selected Property IDs:", selectedProduct);
+
         try {
             const response = await http.api.productGetPapersByProperties({
-                propertyIds: Array.isArray(selectedProduct) ? selectedProduct : [selectedProduct]
+                propertyIds: selectedProduct, // This should be an array of selected IDs
             });
 
             console.log("API Response:", response.data); // Check what you receive from the API
 
             if (Array.isArray(response.data) && response.data.length > 0) {
                 setProducts(response.data);
-                console.log("Sent data: ", response.data);
+                console.log("Updated products state: ", response.data);
             } else {
                 console.warn("No products found for selected properties.");
             }
@@ -71,6 +71,8 @@ const Webshop: React.FC = () => {
             setError('Error fetching filtered products');
         }
     };
+
+
 
 
     const handlePropertySelection = (propertyId: number | undefined) => {
@@ -86,7 +88,7 @@ const Webshop: React.FC = () => {
     }
 
     if (error) {
-        return <div>{error}</div>; // Error state
+        return <div>{error}</div>; 
     }
 
     return (

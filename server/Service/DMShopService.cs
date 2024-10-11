@@ -2,6 +2,7 @@
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Service.TransferModels.Requests;
 using Service.TransferModels.Responses;
 using Service.Validators;
@@ -228,8 +229,23 @@ public class DMShopService(
 
     public List<ProductDto> GetPapersByProperties(List<int> propertyIds)
     {
+        // Directly use the instance variable for DMShopRepository
         var papers = DMShopRepository.GetPapersByProperties(propertyIds);
-        return papers.Select(p => ProductDto.FromEntity(p)).ToList();
+
+        // Map to ProductDto
+        return papers.Select(p => new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            Stock = p.Stock,
+            Discontinued = p.Discontinued,
+            Properties = p.Properties.Select(prop => new PropertyDto
+            {
+                Id = prop.Id,
+                PropertyName = prop.PropertyName
+            }).ToList()
+        }).ToList();
     }
 
     public OrderDetailsDto GetOrderDetailsById(int orderId)

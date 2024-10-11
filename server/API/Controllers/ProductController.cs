@@ -97,10 +97,9 @@ public class ProductController(IDMShopService service, IOptionsMonitor<AppOption
     }
 
     [HttpGet]
-    [Route("papers/filter")]
+    [Route("filter")]
     public IActionResult GetPapersByProperties([FromQuery] List<int> propertyIds)
     {
-        Console.WriteLine($"Received Property IDs: {string.Join(", ", propertyIds)}"); // Log the incoming property IDs
         var papers = service.GetPapersByProperties(propertyIds);
         return Ok(papers);
     }

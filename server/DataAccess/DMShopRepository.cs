@@ -219,7 +219,11 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
     public List<Paper> GetPapersByProperties(List<int> propertyIds)
     {
+        // Log the incoming property IDs
+        Console.WriteLine("Received property IDs: " + string.Join(", ", propertyIds));
+
         return context.Papers
+            .Include(p => p.Properties)
             .Where(p => p.Properties.Any(prop => propertyIds.Contains(prop.Id)))
             .ToList();
     }
