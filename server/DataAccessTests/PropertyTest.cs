@@ -8,7 +8,7 @@ namespace DataAccessTests
 {
     public class PropertyTest
     {
-        private PgCtxSetup<DMShopContext> _pgCtxSetup = new();
+        private PgCtxSetup<DmShopContext> _pgCtxSetup = new();
 
         [Fact]
         public void GetPropertiesForList_ReturnsCorrectProperties()
@@ -19,7 +19,7 @@ namespace DataAccessTests
             _pgCtxSetup.DbContextInstance.SaveChanges();
 
             // Act
-            var result = new DMShopRepository(_pgCtxSetup.DbContextInstance).GetAllProperties();
+            var result = new DmShopRepository(_pgCtxSetup.DbContextInstance).GetAllProperties();
 
             // Assert
             Assert.Equal(3, result.Count);

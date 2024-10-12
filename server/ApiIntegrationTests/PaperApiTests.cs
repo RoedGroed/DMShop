@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using SharedTestDependencies;
 using PgCtx;
 using Service.TransferModels.Responses;
+using Service.TransferModels.Responses.Products;
 
 namespace ApiIntegrationTests;
 
 public class PaperApiTests : WebApplicationFactory<Program>
 {
-    private readonly PgCtxSetup<DMShopContext> _pgCtxSetup = new();
+    private readonly PgCtxSetup<DmShopContext> _pgCtxSetup = new();
     private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
     public PaperApiTests()

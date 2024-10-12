@@ -2,7 +2,7 @@
 
 namespace DataAccess.Interfaces;
 
-public interface IDMShopRepository
+public interface IDmShopRepository
 {
     // outline the methods for the repo
     Order CreateOrder(Order order, List<OrderEntry> orderEntries);
@@ -27,5 +27,5 @@ public interface IDMShopRepository
     
     public List<Order> GetOrdersForCustomer(int customerId);
     public Order UpdateOrderStatus(int orderId, string newStatus);
-    public Customer GetRandomCustomer();
+    public Customer? GetRandomCustomer();
 }

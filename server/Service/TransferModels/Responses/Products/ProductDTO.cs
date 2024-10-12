@@ -1,7 +1,6 @@
 ﻿using DataAccess.Models;
-using System.Collections.Generic;
 
-namespace Service.TransferModels.Responses
+namespace Service.TransferModels.Responses.Products
 {
     // Product DTO
     public class ProductDto
@@ -35,6 +34,6 @@ namespace Service.TransferModels.Responses
     public class PropertyDto
     {
         public int Id { get; set; }
-        public string PropertyName { get; set; }
+        public required string PropertyName { get; set; }
     }
 }

@@ -8,15 +8,15 @@ namespace ServiceTests;
 
 public class UpdateOrderStatusTests
 {
-    private readonly Mock<IDMShopRepository> mockRepository;
-    private readonly DMShopService service;
+    private readonly Mock<IDmShopRepository> mockRepository;
+    private readonly DmShopService service;
     private readonly UpdateOrderStatusValidator validator;
 
     public UpdateOrderStatusTests()
     {
-        mockRepository = new Mock<IDMShopRepository>();
+        mockRepository = new Mock<IDmShopRepository>();
         validator = new UpdateOrderStatusValidator();
-        service = new DMShopService(mockRepository.Object, validator);
+        service = new DmShopService(mockRepository.Object, validator);
     }
 
     [Fact]

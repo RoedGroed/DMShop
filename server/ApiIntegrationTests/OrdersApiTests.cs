@@ -9,13 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using SharedTestDependencies;
 using PgCtx;
 using Service.TransferModels.Requests;
+using Service.TransferModels.Requests.Orders;
 using Service.TransferModels.Responses;
+using Service.TransferModels.Responses.Orders;
 
 namespace ApiIntegrationTests
 {
     public class OrdersApiTests : WebApplicationFactory<Program>
     {
-        private readonly PgCtxSetup<DMShopContext> setup = new();
+        private readonly PgCtxSetup<DmShopContext> setup = new();
         private readonly JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         public OrdersApiTests()
@@ -54,9 +56,9 @@ namespace ApiIntegrationTests
             setup.DbContextInstance.Orders.Add(testOrder);
             await setup.DbContextInstance.SaveChangesAsync();
 
-            var updateStatusDto = new UpdateOrderStatusDTO()
+            var updateStatusDto = new UpdateOrderStatusDto()
             {
-                newStatus = "processing"
+                NewStatus = "processing"
             };
             
             // Act

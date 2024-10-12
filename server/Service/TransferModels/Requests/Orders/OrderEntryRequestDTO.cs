@@ -1,6 +1,6 @@
-namespace Service.TransferModels.Requests;
+namespace Service.TransferModels.Requests.Orders;
 
-public class OrderEntryRequestDTO
+public class OrderEntryRequestDto
 {
     public int ProductId { get; set; }
     public int Quantity { get; set; }

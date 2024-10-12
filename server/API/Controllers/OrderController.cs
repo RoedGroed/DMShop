@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service;
-using Service.TransferModels.Requests;
-using Service.TransferModels.Responses;
+using Service.TransferModels.Requests.Orders;
+using Service.TransferModels.Responses.Orders;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class OrderController(IDMShopService service) : ControllerBase
+public class OrderController(IDmShopService service) : ControllerBase
 {
     [HttpGet]
     [Route("")]
@@ -56,11 +56,11 @@ public class OrderController(IDMShopService service) : ControllerBase
 
     [HttpPut]
     [Route("{orderId}/status")]
-    public IActionResult UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDTO request)
+    public IActionResult UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDto request)
     {
         try
         {
-            var updatedOrder = service.UpdateOrderStatus(orderId, request.newStatus);
+            var updatedOrder = service.UpdateOrderStatus(orderId, request.NewStatus);
             return Ok(OrderDetailsDto.FromEntity(updatedOrder));
         }
         catch (ServiceException ex)
@@ -71,7 +71,7 @@ public class OrderController(IDMShopService service) : ControllerBase
     
     [HttpPost]
     [Route("create")]
-    public ActionResult<OrderDto> createOrder([FromBody] CreateOrderDTO createOrderDto)
+    public ActionResult<OrderDto> CreateOrder([FromBody] CreateOrderDto createOrderDto)
     {
         var createdOrder = service.CreateOrder(createOrderDto);
         return CreatedAtAction(nameof(GetOrdersForList), new { id = createdOrder.Id }, createdOrder);

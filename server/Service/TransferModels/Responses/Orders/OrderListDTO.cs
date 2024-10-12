@@ -1,16 +1,16 @@
 ﻿using DataAccess.Models;
 
-namespace Service.TransferModels.Responses
+namespace Service.TransferModels.Responses.Orders
 {
     public class OrderListDto
     {
         public int Id { get; set; }
         public int? CustomerId { get; set; }
-        public string CustomerName { get; set; }
+        public required string CustomerName { get; set; }
         public DateTime OrderDate { get; set; }
         public DateOnly? DeliveryDate { get; set; }
         public double TotalAmount { get; set; }
-        public string Status { get; set; }
+        public required string Status { get; set; }
 
         public static OrderListDto FromEntity(Order order)
         {
@@ -18,7 +18,7 @@ namespace Service.TransferModels.Responses
             {
                 Id = order.Id,
                 CustomerId = order.CustomerId,
-                CustomerName = order.Customer?.Name ?? "Unknown",
+                CustomerName = order.Customer?.Name ?? string.Empty,
                 OrderDate = order.OrderDate,
                 DeliveryDate = order.DeliveryDate,
                 TotalAmount = order.TotalAmount,

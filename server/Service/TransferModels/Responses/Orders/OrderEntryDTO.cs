@@ -1,6 +1,6 @@
 ﻿using DataAccess.Models;
 
-namespace Service.TransferModels.Responses
+namespace Service.TransferModels.Responses.Orders
 {
     public class OrderEntryDto
     {
@@ -19,7 +19,7 @@ namespace Service.TransferModels.Responses
                 ProductId = orderEntry.ProductId,
                 ProductName = orderEntry.Product?.Name,
                 Price = orderEntry.Product?.Price,
-                TotalPrice = orderEntry.Product.Price * orderEntry.Quantity
+                TotalPrice = orderEntry.Product!.Price * orderEntry.Quantity
             };
         }
     }
