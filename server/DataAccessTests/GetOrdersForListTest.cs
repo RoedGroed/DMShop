@@ -8,7 +8,7 @@ namespace DataAccessTests;
     
 public class GetOrdersForListTest
 {
-    private readonly PgCtxSetup<DMShopContext> _setup = new();
+    private readonly PgCtxSetup<DmShopContext> _setup = new();
 
     [Fact]
     public void GetOrdersForList_ReturnsCorrectOrders()
@@ -24,7 +24,7 @@ public class GetOrdersForListTest
         _setup.DbContextInstance.SaveChanges();
 
         // Act
-        var result = new DMShopRepository(_setup.DbContextInstance).GetOrdersForList(2, 0);
+        var result = new DmShopRepository(_setup.DbContextInstance).GetOrdersForList(2, 0);
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -47,7 +47,7 @@ public class GetOrdersForListTest
         _setup.DbContextInstance.SaveChanges();
 
         // Act:
-        var result = new DMShopRepository(_setup.DbContextInstance).GetOrdersForList(2, 2);
+        var result = new DmShopRepository(_setup.DbContextInstance).GetOrdersForList(2, 2);
 
         Assert.Single(result);
 

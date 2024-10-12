@@ -4,6 +4,7 @@ using FluentValidation;
 using Moq;
 using Service;
 using Service.TransferModels.Requests;
+using Service.TransferModels.Requests.Orders;
 using Service.TransferModels.Responses;
 using Xunit;
 
@@ -11,28 +12,28 @@ namespace ServiceTests;
 
 public class CreateOrderServiceTest
 {
-    private readonly Mock<IDMShopRepository> mockRepository;
-    private readonly DMShopService service;
+    private readonly Mock<IDmShopRepository> mockRepository;
+    private readonly DmShopService service;
 
     public CreateOrderServiceTest()
     {
-        mockRepository = new Mock<IDMShopRepository>();
-        service = new DMShopService(mockRepository.Object, null);
+        mockRepository = new Mock<IDmShopRepository>();
+        service = new DmShopService(mockRepository.Object, null);
     }
 
     [Fact]
     public void CreateOrder_Should_Return_CreatedOrder_When_ValidData_Provided()
     {
         // Arrange
-        var createOrderDto = new CreateOrderDTO
+        var createOrderDto = new CreateOrderDto
         {
             CustomerId = 1,
             OrderDate = DateTime.UtcNow,
             DeliveryDate = DateTime.UtcNow.AddDays(1),
             Status = "pending",
-            OrderEntries = new List<OrderEntryRequestDTO>
+            OrderEntries = new List<OrderEntryRequestDto>
             {
-                new OrderEntryRequestDTO { ProductId = 1, Quantity = 2 }
+                new OrderEntryRequestDto { ProductId = 1, Quantity = 2 }
             }
         };
 

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public partial class DMShopContext : DbContext
+public partial class DmShopContext : DbContext
 {
-    public DMShopContext(DbContextOptions<DMShopContext> options)
+    public DmShopContext(DbContextOptions<DmShopContext> options)
         : base(options)
     {
     }

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Service.TransferModels.Responses;
+using Service.TransferModels.Responses.Products;
 
 namespace Service.Validators;
 

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service;
-using Service.TransferModels.Responses;
+using Service.TransferModels.Responses.Products;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProductController(IDMShopService service) : ControllerBase
+public class ProductController(IDmShopService service) : ControllerBase
 {
 
     [HttpGet]
@@ -23,7 +23,7 @@ public class ProductController(IDMShopService service) : ControllerBase
     {
         var papers = service.GetAllPapersWithProperties();
             
-        if (papers == null || !papers.Any())
+        if (!papers.Any())
         {
             return NotFound("No papers found.");
         }
@@ -76,7 +76,7 @@ public class ProductController(IDMShopService service) : ControllerBase
         }
 
         // Extract property IDs from the productDto
-        var propertyIds = productDto.Properties?.Select(p => p.Id).ToList() ?? new List<int>();
+        var propertyIds = productDto.Properties.Select(p => p.Id).ToList();
         
         var updatedProduct = service.UpdatePaper(id, productDto, propertyIds);
 

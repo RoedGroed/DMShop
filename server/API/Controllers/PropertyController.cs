@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service;
-using Service.TransferModels.Responses;
+using Service.TransferModels.Responses.Products;
 
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PropertyController(IDMShopService service) : ControllerBase
+public class PropertyController(IDmShopService service) : ControllerBase
 {
 
     [HttpGet]
@@ -15,7 +15,7 @@ public class PropertyController(IDMShopService service) : ControllerBase
     public ActionResult<List<PropertyDto>> GetAllProperties()
     {
         var properties = service.GetAllProperties();
-        if (properties == null || !properties.Any())
+        if (!properties.Any())
         {
             return NotFound("No properties found");
         }

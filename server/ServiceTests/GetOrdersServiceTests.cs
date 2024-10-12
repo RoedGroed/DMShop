@@ -9,13 +9,13 @@ namespace ServiceTests;
 
     public class GetOrdersServiceTests
     {
-        private readonly PgCtxSetup<DMShopContext> setup = new();
-        private readonly DMShopService orderService;
+        private readonly PgCtxSetup<DmShopContext> setup = new();
+        private readonly DmShopService orderService;
 
         public GetOrdersServiceTests()
         {
-            var repository = new DMShopRepository(setup.DbContextInstance);
-            orderService = new DMShopService(repository, null);
+            var repository = new DmShopRepository(setup.DbContextInstance);
+            orderService = new DmShopService(repository, null);
         }
 
         [Fact]

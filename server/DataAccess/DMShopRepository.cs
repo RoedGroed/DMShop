@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public class DMShopRepository(DMShopContext context) : IDMShopRepository
+public class DmShopRepository(DmShopContext context) : IDmShopRepository
 {
     public List<Paper> GetAllPapers()
     {
@@ -21,7 +21,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
 
     public Paper GetPaperById(int id)
     {
-        return context.Papers.Include(p => p.Properties).FirstOrDefault(p => p.Id == id);
+        return context.Papers.Include(p => p.Properties).FirstOrDefault(p => p.Id == id)!;
     }
 
 
@@ -105,7 +105,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         var properties = context.Properties.Where(p => propertyIds.Contains(p.Id)).ToList();
         foreach (var property in properties)
         {
-            paper.Properties.Add(property);
+            paper!.Properties.Add(property);
         }
 
         context.SaveChanges();
@@ -133,7 +133,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             .FirstOrDefault(p => p.Id == propertyId);
         
         // Remove the associations with the paper
-        property.Papers.Clear();
+        property!.Papers.Clear();
         
         // remove the property in its own table
         context.Properties.Remove(property);
@@ -144,7 +144,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
     {
         var existingProperty = context.Properties.FirstOrDefault(p => p.Id == updatedProperty.Id);
         
-        existingProperty.PropertyName = updatedProperty.PropertyName;
+        existingProperty!.PropertyName = updatedProperty.PropertyName;
 
         context.SaveChanges();
         return existingProperty;
@@ -178,7 +178,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
                 .Include(o => o.Customer)
                 .FirstOrDefault(o => o.Id == orderId);
 
-            return order;
+            return order ?? throw new DataAccessException($"Failed to retrieve order with ID {orderId}");
         }
         catch (Exception)
         {
@@ -192,7 +192,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
         {
             var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
             
-            order.Status = newStatus;
+            order!.Status = newStatus;
             context.SaveChanges();
             
             return order;
@@ -226,7 +226,7 @@ public class DMShopRepository(DMShopContext context) : IDMShopRepository
             .ToList();
     }
     
-    public Customer GetRandomCustomer()
+    public Customer? GetRandomCustomer()
     {
         try
         {

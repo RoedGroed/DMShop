@@ -7,7 +7,7 @@ namespace DataAccessTests;
     
 public class UpdateOrderStatusTest
 {
-    private readonly PgCtxSetup<DMShopContext> _setup = new();
+    private readonly PgCtxSetup<DmShopContext> _setup = new();
     
     [Fact]
     public void UpdateOrderStatus_ReturnsCorrectOrderAfterUpdate()
@@ -19,7 +19,7 @@ public class UpdateOrderStatusTest
         _setup.DbContextInstance.SaveChanges();
 
         // Act:
-        var repository = new DMShopRepository(_setup.DbContextInstance);
+        var repository = new DmShopRepository(_setup.DbContextInstance);
         var updatedOrder = repository.UpdateOrderStatus(testOrder.Id, "cancelled");
 
         // Assert:

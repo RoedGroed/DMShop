@@ -1,14 +1,11 @@
-﻿using Service.TransferModels.Requests;
+﻿namespace Service.TransferModels.Requests.Orders;
 
-namespace Service.TransferModels.Requests;
-
-public class CreateOrderDTO
+public class CreateOrderDto
 {
     public int CustomerId { get; set; }
-    public List<OrderEntryRequestDTO> Items { get; set; }
     public DateTime DeliveryDate { get; set; }
     public DateTime OrderDate { get; set; }
-    public string Status { get; set; }
-    public List<OrderEntryRequestDTO> OrderEntries { get; set; }
+    public required string Status { get; set; }
+    public required List<OrderEntryRequestDto> OrderEntries { get; set; }
     public double TotalAmount { get; set; }
 }
